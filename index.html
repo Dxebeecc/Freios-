@@ -102,21 +102,30 @@
                                             <textarea x-model="check.texto" placeholder="Instrução do check..." class="w-full p-2 border border-gray-200 rounded text-xs resize-none" rows="2"></textarea>
                                             
                                             <div class="bg-white p-2 rounded border border-gray-100 space-y-2 relative">
-                                                <label class="text-[10px] font-black text-blue-900 uppercase tracking-wider block">🛠️ Ferramenta do Acervo</label>
+                                                <label class="text-[10px] font-black text-blue-900 uppercase tracking-wider block">🛠️ Referência Visual</label>
                                                 
-                                                <div x-show="!check.toolCode" class="space-y-1">
-                                                    <input type="text" 
-                                                           placeholder="Digite o P/N ou nome para buscar..." 
-                                                           @input="buscarNoAcervo($event.target.value, check)"
-                                                           class="w-full text-xs border border-gray-300 rounded p-1.5 bg-gray-50 focus:bg-white outline-none">
-                                                    
-                                                    <div x-show="check._resultados && check._resultados.length > 0" class="absolute z-30 left-0 right-0 bg-white border border-gray-300 rounded shadow-lg max-h-40 overflow-y-auto mt-1 text-xs">
-                                                        <template x-for="t in check._resultados" :key="t.id">
-                                                            <div @click="vincularFerramenta(t, check)" class="p-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 flex justify-between">
-                                                                <span class="font-bold text-blue-900" x-text="t.code"></span>
-                                                                <span class="text-gray-500 truncate max-w-[200px]" x-text="t.name"></span>
-                                                            </div>
-                                                        </template>
+                                                <div x-show="!check.toolCode && !check._isManual" class="space-y-2">
+                                                    <div class="relative">
+                                                        <input type="text" 
+                                                               placeholder="Buscar ferramenta no Acervo..." 
+                                                               @input="buscarNoAcervo($event.target.value, check)"
+                                                               class="w-full text-xs border border-blue-200 rounded p-1.5 bg-blue-50/30 focus:bg-white outline-none">
+                                                        
+                                                        <div x-show="check._resultados && check._resultados.length > 0" class="absolute z-30 left-0 right-0 bg-white border border-gray-300 rounded shadow-lg max-h-40 overflow-y-auto mt-1 text-xs">
+                                                            <template x-for="t in check._resultados" :key="t.id">
+                                                                <div @click="vincularFerramenta(t, check)" class="p-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 flex justify-between">
+                                                                    <span class="font-bold text-blue-900" x-text="t.code"></span>
+                                                                    <span class="text-gray-500 truncate max-w-[200px]" x-text="t.name"></span>
+                                                                </div>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="text-center text-[10px] text-gray-400 font-bold">OU</div>
+
+                                                    <div>
+                                                        <label class="text-[10px] font-bold text-gray-500">Carregar foto do dispositivo (Opcional):</label>
+                                                        <input type="file" accept="image/*" @change="converterImagemBase64($event, check)" class="w-full text-xs border border-gray-300 rounded p-1 bg-gray-50">
                                                     </div>
                                                 </div>
 
@@ -127,6 +136,15 @@
                                                     </div>
                                                     <button @click="desvincularFerramenta(check)" class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">Mudar</button>
                                                 </div>
+
+                                                <div x-show="!check.toolCode && check._isManual" class="flex items-center justify-between bg-purple-50 border border-purple-200 p-2 rounded">
+                                                    <div class="text-xs">
+                                                        <p class="font-bold text-purple-800">📸 Foto Manual Anexada</p>
+                                                        <p class="text-[10px] text-purple-600">Salva no procedimento.</p>
+                                                    </div>
+                                                    <button @click="removerFotoManual(check)" class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">Remover</button>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </template>
@@ -167,8 +185,9 @@
                 <div class="absolute top-1/2 left-8 right-8 h-1 bg-blue-800 transform -translate-y-1/2 rounded-full"></div>
                 <template x-for="(etapa, index) in procCarregado.etapas" :key="index">
                     <div class="flex flex-col items-center gap-1 bg-blue-900 px-2 relative z-10">
-                        <div :class="etapaAtual === index ? 'border-white bg-red-600 text-white shadow-lg' : (etapaAtual > index ? 'border-green-400 bg-green-400 text-blue-900' : 'border-blue-800 bg-blue-900 text-blue-400')"
-                             class="w-10 h-10 rounded-full flex items-center justify-center border-4 transition-colors duration-300">
+                        <div @click="etapaAtual = index"
+                             :class="etapaAtual === index ? 'border-white bg-red-600 text-white shadow-lg' : (etapaAtual > index ? 'border-green-400 bg-green-400 text-blue-900' : 'border-blue-800 bg-blue-900 text-blue-400')"
+                             class="w-10 h-10 rounded-full flex items-center justify-center border-4 transition-colors duration-300 cursor-pointer hover:scale-110 transform">
                              <svg x-show="etapaAtual > index" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
                              <div x-show="etapaAtual <= index" class="font-bold text-sm" x-text="index + 1"></div>
                         </div>
@@ -198,9 +217,9 @@
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 pb-6 shadow-2xl z-20">
             <div class="max-w-md mx-auto flex justify-between gap-4">
-                <button @click="etapaAtual = Math.max(0, etapaAtual - 1)" :disabled="etapaAtual === 0" :class="etapaAtual === 0 ? 'bg-gray-50 text-gray-300 border border-gray-100' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="flex-1 py-4 px-4 rounded-2xl font-bold text-sm transition-all">Voltar</button>
-                <button x-show="etapaAtual < procCarregado.etapas.length - 1" @click="etapaAtual = Math.min(procCarregado.etapas.length - 1, etapaAtual + 1)" :disabled="!isEtapaCompleta()" :class="isEtapaCompleta() ? 'bg-blue-900 text-white shadow-lg' : 'bg-blue-50 text-blue-300 border border-blue-100'" class="flex-none w-2/3 py-4 px-4 rounded-2xl font-bold text-sm transition-all">Avançar Etapa</button>
-                <button x-show="etapaAtual === procCarregado.etapas.length - 1" @click="finalizar()" :disabled="!isEtapaCompleta()" :class="isEtapaCompleta() ? 'bg-green-500 text-white shadow-lg' : 'bg-green-50 text-green-200 border border-green-100'" class="flex-none w-2/3 py-4 px-4 rounded-2xl font-bold text-sm transition-all">Finalizar OS</button>
+                <button @click="etapaAtual = Math.max(0, etapaAtual - 1)" :disabled="etapaAtual === 0" :class="etapaAtual === 0 ? 'bg-gray-50 text-gray-300 border border-gray-100' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="flex-1 py-4 px-4 rounded-2xl font-bold text-sm transition-all cursor-pointer">Voltar</button>
+                <button x-show="etapaAtual < procCarregado.etapas.length - 1" @click="etapaAtual = Math.min(procCarregado.etapas.length - 1, etapaAtual + 1)" :class="isEtapaCompleta() ? 'bg-blue-900 text-white shadow-lg' : 'bg-blue-100 text-blue-800 border border-blue-200 hover:bg-blue-200'" class="flex-none w-2/3 py-4 px-4 rounded-2xl font-bold text-sm transition-all cursor-pointer">Avançar Etapa</button>
+                <button x-show="etapaAtual === procCarregado.etapas.length - 1" @click="finalizar()" :class="isEtapaCompleta() ? 'bg-green-500 text-white shadow-lg' : 'bg-green-100 text-green-800 border border-green-200 hover:bg-green-200'" class="flex-none w-2/3 py-4 px-4 rounded-2xl font-bold text-sm transition-all cursor-pointer">Finalizar OS</button>
             </div>
         </div>
     </div>
@@ -229,11 +248,11 @@
                     <div class="flex-1 pt-0.5 flex flex-col gap-2">
                         <p :class="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck] ? 'text-gray-500 line-through' : 'text-gray-800 font-semibold'" class="text-sm leading-snug whitespace-pre-line" x-text="check.texto"></p>
                         
-                        <template x-if="check.toolCode">
+                        <template x-if="check.toolCode || check.imgUrl">
                             <div class="flex gap-2 w-full mt-1">
                                 <button @click="abrirModal(check)" class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors">
                                     <svg style="width: 14px; height: 14px;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    <span x-text="'Ref. ' + check.toolCode"></span>
+                                    <span x-text="check.toolCode ? ('Ref. ' + check.toolCode) : 'Apoio Visual'"></span>
                                 </button>
                                 
                                 <button class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-orange-100 text-orange-600 rounded-lg border border-orange-200 hover:bg-orange-200 transition shadow-sm">
@@ -247,7 +266,7 @@
         </div>
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 pb-6 shadow-2xl z-20">
-            <button @click="ecra = 'checklist'" class="w-full py-4 px-4 bg-gray-200 text-gray-700 rounded-2xl font-bold text-sm flex items-center justify-center transition-all">
+            <button @click="ecra = 'checklist'" class="w-full py-4 px-4 bg-gray-200 text-gray-700 rounded-2xl font-bold text-sm flex items-center justify-center transition-all cursor-pointer hover:bg-gray-300">
                 Voltar para Lista
             </button>
         </div>
@@ -268,7 +287,7 @@
             </div>
             
             <div class="bg-white p-4 border-t border-gray-200 space-y-2">
-                <div class="bg-blue-50 p-3 rounded-xl border border-blue-200 w-full">
+                <div class="bg-blue-50 p-3 rounded-xl border border-blue-200 w-full" x-show="modalData.toolCode">
                     <p class="text-blue-500 font-bold uppercase tracking-wider mb-0.5" style="font-size: 9px;">Ferramenta / P/N</p>
                     <p class="text-blue-900 font-black" x-text="modalData.toolCode"></p>
                 </div>
@@ -317,18 +336,34 @@
                 },
 
                 // === LOGICA DO MODO CRIADOR ===
-                proc: { modelo: 'A320', processo: 'Desmontagem', etapas: [] },
+                proc: { modelo: '', processo: '', etapas: [] },
 
                 iniciarCriacao() {
-                    this.proc = { modelo: 'A320', processo: 'Desmontagem', etapas: [{ nome: 'Abertura', modulos: [{ titulo: 'Torque Tube', checks: [] }] }] };
+                    this.proc = { modelo: '', processo: '', etapas: [{ nome: '', modulos: [{ titulo: '', checks: [] }] }] };
                     this.ecra = 'criador';
                 },
                 adicionarEtapa() { this.proc.etapas.push({ nome: '', modulos: [] }); },
                 removerEtapa(i) { this.proc.etapas.splice(i, 1); },
                 adicionarModulo(iEtapa) { this.proc.etapas[iEtapa].modulos.push({ titulo: '', checks: [] }); },
                 removerModulo(iEtapa, iMod) { this.proc.etapas[iEtapa].modulos.splice(iMod, 1); },
-                adicionarCheck(iEtapa, iMod) { this.proc.etapas[iEtapa].modulos[iMod].checks.push({ texto: '', toolCode: '', imgUrl: '', _toolName: '', _local: '', _resultados: [] }); },
+                adicionarCheck(iEtapa, iMod) { this.proc.etapas[iEtapa].modulos[iMod].checks.push({ texto: '', toolCode: '', imgUrl: '', _toolName: '', _local: '', _resultados: [], _isManual: false }); },
                 
+                // Mágica para converter Foto do PC em Base64
+                converterImagemBase64(event, checkRef) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (e) => { 
+                        checkRef.imgUrl = e.target.result; 
+                        checkRef._isManual = true; 
+                    };
+                    reader.readAsDataURL(file);
+                },
+                removerFotoManual(checkRef) {
+                    checkRef.imgUrl = '';
+                    checkRef._isManual = false;
+                },
+
                 // Realiza a busca no acervo em tempo real
                 buscarNoAcervo(query, checkRef) {
                     if (!query || query.trim() === '') {
@@ -345,6 +380,7 @@
                     checkRef._local = `${tool.loc} > ${tool.sub}`;
                     checkRef.imgUrl = tool.image && tool.image !== 'COLE_O_LINK_DO_IMGUR_AQUI' ? tool.image : '';
                     checkRef._resultados = [];
+                    checkRef._isManual = false; // Garante que não mistura com a foto do PC
                 },
 
                 desvincularFerramenta(checkRef) {
@@ -359,7 +395,8 @@
                     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.proc, null, 2));
                     const node = document.createElement('a');
                     node.setAttribute("href", dataStr);
-                    node.setAttribute("download", this.proc.modelo + "_" + this.proc.processo + ".json");
+                    const nomeArquivo = (this.proc.modelo || 'OS') + "_" + (this.proc.processo || 'Procedimento');
+                    node.setAttribute("download", nomeArquivo + ".json");
                     document.body.appendChild(node);
                     node.click();
                     node.remove();
@@ -421,7 +458,7 @@
                     this.modalData = { 
                         imgUrl: checkData.imgUrl || '', 
                         toolCode: checkData.toolCode || '',
-                        local: checkData._local || 'Consulte Acervo Físico'
+                        local: checkData._local || (checkData._isManual ? 'Foto Anexada no Procedimento' : 'Consulte Acervo Físico')
                     };
                     this.modalOpen = true;
                 },
