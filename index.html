@@ -3,55 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Arquiteto LATAM - Plataforma Avançada</title>
+    <title>Arquiteto LATAM - Criador de Procedimento Avançado</title>
+    <!-- Importando a fonte Montserrat para ficar idêntica à identidade da marca -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <style>
+        body { font-family: 'Montserrat', sans-serif; }
         [x-cloak] { display: none !important; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans antialiased min-h-screen" x-data="appPlataforma">
+<body class="bg-[#f8fafc] text-gray-800 antialiased min-h-screen" x-data="appPlataforma">
 
-    <!-- ==================== TELA HOME ==================== -->
+    <!-- ==================== TELA HOME (Fundo Azul Marinho Oficial) ==================== -->
     <div x-show="ecra === 'home'" x-cloak class="min-h-screen flex flex-col items-center">
         <div class="w-full max-w-md bg-white min-h-screen shadow-2xl flex flex-col">
-            <div class="bg-red-600 p-8 text-white text-center rounded-b-3xl shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-3 opacity-90"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l5 5-3 3-3-1-1 1 2.5 4.5L11 23l1-1-1-3 3-3 5 5 1.2-.7c.4-.2.7-.6.6-1.1z"/></svg>
-                <h1 class="text-3xl font-extrabold tracking-tight">Arquiteto LATAM</h1>
-                <p class="text-red-100 mt-1 font-medium">Criador de Procedimento Avançado</p>
+            <div class="bg-[#0f1a4a] p-8 text-white text-center rounded-b-3xl shadow-lg">
+                <!-- Logo LATAM para fundo escuro (Branco e Vermelho) -->
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <img src="https://i.imgur.com/x9rWRtr.png" class="h-10 w-auto flex-shrink-0" alt="Logo LATAM">
+                    <div class="text-left">
+                        <h1 class="text-2xl font-black tracking-tight leading-none">Arquiteto</h1>
+                        <span class="text-xs font-bold tracking-widest text-red-500 uppercase">LATAM</span>
+                    </div>
+                </div>
+                <p class="text-blue-200 text-sm font-medium">Criador de Procedimento Avançado</p>
                 
-                <div class="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-black/20 text-white">
+                <div class="mt-5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-white">
                     <span :class="isLoadingDb ? 'bg-orange-400 animate-pulse' : 'bg-green-400'" class="w-2 h-2 rounded-full flex-shrink-0"></span>
                     <span x-text="isLoadingDb ? 'Sincronizando Acervo...' : 'Acervo Digital Pronto'" class="truncate"></span>
                 </div>
             </div>
 
             <div class="flex-1 p-6 flex flex-col justify-center space-y-6">
-                <button @click="iniciarCriacao()" :disabled="isLoadingDb" :class="isLoadingDb ? 'opacity-50 cursor-not-allowed' : ''" class="bg-white border-2 border-dashed border-blue-400 p-6 rounded-3xl text-left hover:border-blue-600 hover:bg-blue-50 transition-all flex items-center justify-between gap-4 group">
+                <button @click="iniciarCriacao()" :disabled="isLoadingDb" :class="isLoadingDb ? 'opacity-50 cursor-not-allowed' : ''" class="bg-white border-2 border-dashed border-[#2a3f8a] p-6 rounded-3xl text-left hover:border-red-500 hover:bg-red-50/30 transition-all flex items-center justify-between gap-4 group">
                     <div class="flex-1">
-                        <h3 class="text-xl font-black text-blue-900">1. Criar / Editar</h3>
-                        <p class="text-sm font-medium text-gray-500 mt-1">Montar ou atualizar biblioteca de OS</p>
+                        <h3 class="text-xl font-black text-[#0f1a4a]">1. Criar / Editar</h3>
+                        <p class="text-sm font-medium text-gray-400 mt-1">Montar ou atualizar biblioteca de OS</p>
                     </div>
-                    <div class="w-12 h-12 flex-shrink-0 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                    <div class="w-12 h-12 flex-shrink-0 bg-blue-50 rounded-full flex items-center justify-center text-[#2a3f8a] group-hover:bg-red-500 group-hover:text-white transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
                     </div>
                 </button>
 
                 <div class="relative flex py-2 items-center">
-                    <div class="flex-grow border-t border-gray-300"></div>
-                    <span class="flex-shrink-0 mx-4 text-gray-400 text-sm font-bold">OU</span>
-                    <div class="flex-grow border-t border-gray-300"></div>
+                    <div class="flex-grow border-t border-gray-200"></div>
+                    <span class="flex-shrink-0 mx-4 text-gray-300 text-xs font-bold">OU</span>
+                    <div class="flex-grow border-t border-gray-200"></div>
                 </div>
 
-                <label class="bg-white border-2 border-gray-200 p-6 rounded-3xl text-left hover:border-green-500 hover:shadow-md transition-all flex items-center justify-between gap-4 cursor-pointer group">
+                <label class="bg-white border-2 border-gray-100 p-6 rounded-3xl text-left hover:border-[#21c55e] hover:shadow-md transition-all flex items-center justify-between gap-4 cursor-pointer group">
                     <div class="flex-1">
-                        <h3 class="text-xl font-black text-green-700">2. Executar OS</h3>
-                        <p class="text-sm font-medium text-gray-500 mt-1">Carregar ficheiro gerado (.json)</p>
+                        <h3 class="text-xl font-black text-gray-700">2. Executar OS</h3>
+                        <p class="text-sm font-medium text-gray-400 mt-1">Carregar ficheiro gerado (.json)</p>
                         <input type="file" accept=".json" class="hidden" @change="carregarProcedimento($event)">
                     </div>
-                    <div class="w-12 h-12 flex-shrink-0 bg-green-50 rounded-full flex items-center justify-center text-green-600">
+                    <div class="w-12 h-12 flex-shrink-0 bg-green-50 rounded-full flex items-center justify-center text-[#21c55e] group-hover:bg-[#21c55e] group-hover:text-white transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                     </div>
                 </label>
@@ -59,21 +70,26 @@
         </div>
     </div>
 
-    <!-- ==================== TELA CRIADOR & EDITOR ==================== -->
-    <div x-show="ecra === 'criador'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-gray-50 relative shadow-2xl pb-40">
-        <div class="bg-slate-800 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center gap-2">
-            <button @click="ecra = 'home'" class="w-10 h-10 flex-shrink-0 bg-slate-700 rounded-full hover:bg-slate-600 transition flex items-center justify-center">
+    <!-- ==================== TELA CRIADOR & EDITOR (Fundo Claro) ==================== -->
+    <div x-show="ecra === 'criador'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-[#f8fafc] relative shadow-2xl pb-40">
+        <div class="bg-white border-b border-gray-200 text-gray-800 p-4 shadow-sm sticky top-0 z-20 flex justify-between items-center gap-2">
+            <button @click="ecra = 'home'" class="w-10 h-10 flex-shrink-0 bg-gray-100 rounded-full hover:bg-gray-200 transition flex items-center justify-center text-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
             </button>
-            <h1 class="font-black text-lg tracking-wide flex-1 text-center truncate" x-text="isEditingIndex !== null ? 'Editando OS' : 'Construir OS'"></h1>
-            <button @click="modalEdicaoOpen = true" class="bg-blue-500 hover:bg-blue-600 text-xs px-3 py-1.5 rounded-full font-bold flex-shrink-0 flex items-center gap-1 cursor-pointer transition shadow-sm">
+            
+            <!-- Logo LATAM para fundo claro (Roxo e Vermelho) -->
+            <div class="flex items-center gap-2 flex-1 justify-center truncate">
+                <img src="https://i.imgur.com/mL8cUvQ.png" class="h-6 w-auto flex-shrink-0" alt="Logo LATAM">
+                <h1 class="font-black text-sm tracking-tight text-[#0f1a4a]" x-text="isEditingIndex !== null ? 'Editar OS' : 'Construir OS'"></h1>
+            </div>
+
+            <button @click="modalEdicaoOpen = true" class="bg-[#0f1a4a] text-white text-[11px] px-3 py-2 rounded-full font-bold flex-shrink-0 flex items-center gap-1 cursor-pointer transition shadow-sm">
                 <span x-text="bibliotecaEmCriacao.length + ' salvos'"></span>
                 <span class="text-[9px]">▼</span>
             </button>
         </div>
 
         <div class="p-5 space-y-6">
-            
             <div x-show="isEditingIndex === null && bibliotecaEmCriacao.length === 0" class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl flex items-center justify-between shadow-sm">
                 <div class="text-xs text-yellow-800 pr-2">
                     <span class="font-black block mb-0.5">Editar catálogo antigo?</span>
@@ -85,54 +101,54 @@
                 </label>
             </div>
 
-            <div :class="isEditingIndex !== null ? 'border-blue-400 bg-blue-50' : 'border-gray-200 bg-white'" class="p-4 rounded-xl border shadow-sm space-y-4 transition-colors">
+            <div :class="isEditingIndex !== null ? 'border-blue-400 bg-blue-50/40' : 'border-gray-200 bg-white'" class="p-4 rounded-xl border shadow-sm space-y-4 transition-colors">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Equipamento</label>
-                        <input type="text" x-model="proc.equipamento" placeholder="Ex: A320, B777..." class="w-full border-b-2 border-gray-300 focus:border-blue-500 py-1 text-sm font-bold outline-none text-slate-800 uppercase bg-transparent">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Equipamento</label>
+                        <input type="text" x-model="proc.equipamento" placeholder="Ex: A320, B777..." class="w-full border-b-2 border-gray-200 focus:border-[#0f1a4a] py-1 text-sm font-bold outline-none text-slate-800 uppercase bg-transparent">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Ciclo</label>
-                        <input type="text" x-model="proc.ciclo" placeholder="Ex: 2º Ciclo..." class="w-full border-b-2 border-gray-300 focus:border-blue-500 py-1 text-sm font-bold outline-none text-slate-800 uppercase bg-transparent">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Ciclo</label>
+                        <input type="text" x-model="proc.ciclo" placeholder="Ex: 2º Ciclo..." class="w-full border-b-2 border-gray-200 focus:border-[#0f1a4a] py-1 text-sm font-bold outline-none text-slate-800 uppercase bg-transparent">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Fluxo / Processo</label>
-                    <input type="text" x-model="proc.processo" placeholder="Ex: Desmontagem..." class="w-full border-b-2 border-gray-300 focus:border-blue-500 py-1 text-base font-bold outline-none text-slate-800 bg-transparent">
+                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">Fluxo / Processo</label>
+                    <input type="text" x-model="proc.processo" placeholder="Ex: Desmontagem..." class="w-full border-b-2 border-gray-200 focus:border-[#0f1a4a] py-1 text-base font-bold outline-none text-slate-800 bg-transparent">
                 </div>
             </div>
 
             <template x-for="(etapa, indexEtapa) in proc.etapas" :key="indexEtapa">
-                <div class="bg-blue-50 p-4 rounded-xl border-2 border-blue-200 shadow-sm space-y-4 relative mt-4">
-                    <button @click="removerEtapa(indexEtapa)" class="absolute top-3 right-3 text-red-400 hover:text-red-600 text-xs font-bold">Excluir Etapa</button>
-                    <label class="block text-xs font-bold text-blue-800 uppercase pr-20">Etapa Principal (Bolinha <span x-text="indexEtapa + 1"></span>)</label>
-                    <input type="text" x-model="etapa.nome" class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold focus:outline-none focus:border-blue-400">
+                <div class="bg-blue-50/40 p-4 rounded-xl border-2 border-blue-100 shadow-sm space-y-4 relative mt-4">
+                    <button @click="removerEtapa(indexEtapa)" class="absolute top-3 right-3 text-red-500 hover:text-red-700 text-xs font-bold">Excluir Etapa</button>
+                    <label class="block text-xs font-bold text-[#0f1a4a] uppercase pr-20">Etapa Principal (Bolinha <span x-text="indexEtapa + 1"></span>)</label>
+                    <input type="text" x-model="etapa.nome" class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold focus:outline-none focus:border-[#2a3f8a]">
 
-                    <div class="space-y-4 pl-4 border-l-2 border-blue-300">
+                    <div class="space-y-4 pl-4 border-l-2 border-blue-200">
                         <template x-for="(modulo, indexModulo) in etapa.modulos" :key="indexModulo">
                             <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm relative mt-3">
                                 <button @click="removerModulo(indexEtapa, indexModulo)" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-[10px] font-bold">X Remover</button>
                                 <label class="block text-[10px] font-bold text-gray-400 uppercase pr-16">Título do Módulo (Caixa Branca)</label>
-                                <input type="text" x-model="modulo.titulo" class="w-full mb-3 mt-1 text-sm font-black text-blue-900 border-b border-gray-200 focus:outline-none">
+                                <input type="text" x-model="modulo.titulo" class="w-full mb-3 mt-1 text-sm font-black text-[#0f1a4a] border-b border-gray-200 focus:outline-none">
                                 
                                 <div class="space-y-3">
                                     <template x-for="(check, indexCheck) in modulo.checks" :key="indexCheck">
                                         <div class="bg-gray-50 p-3 rounded border border-gray-200 text-sm space-y-3">
                                             <div class="flex justify-between items-center">
                                                 <span class="text-[10px] bg-slate-200 px-1.5 py-0.5 rounded font-bold text-slate-600" x-text="'Check #' + (indexCheck + 1)"></span>
-                                                <button @click="modulo.checks.splice(indexCheck, 1)" class="text-red-400 text-xs hover:text-red-600">Remover</button>
+                                                <button @click="modulo.checks.splice(indexCheck, 1)" class="text-red-500 text-xs hover:text-red-700">Remover</button>
                                             </div>
-                                            <textarea x-model="check.texto" placeholder="Instrução do check..." class="w-full p-2 border border-gray-200 rounded text-xs resize-none" rows="2"></textarea>
+                                            <textarea x-model="check.texto" placeholder="Instrução do check..." class="w-full p-2 border border-gray-200 rounded text-xs resize-none font-medium" rows="2"></textarea>
                                             
                                             <div class="bg-white p-3 rounded border border-gray-100 space-y-3">
                                                 <div class="space-y-1 relative border-b border-gray-100 pb-2">
-                                                    <label class="text-[10px] font-black text-blue-900 uppercase tracking-wider block">🛠️ Ferramenta do Acervo (Sheets)</label>
+                                                    <label class="text-[10px] font-black text-[#0f1a4a] uppercase tracking-wider block">🛠️ Ferramenta do Acervo (Sheets)</label>
                                                     <div x-show="!check.toolCode">
                                                         <input type="text" placeholder="Buscar ferramenta por P/N ou nome..." @input="buscarNoAcervo($event.target.value, check)" class="w-full text-xs border border-gray-300 rounded p-1.5 bg-gray-50 focus:bg-white outline-none">
                                                         <div x-show="check._resultados && check._resultados.length > 0" class="absolute z-30 left-0 right-0 bg-white border border-gray-300 rounded shadow-lg max-h-35 overflow-y-auto mt-1 text-xs">
                                                             <template x-for="t in check._resultados" :key="t.id">
                                                                 <div @click="vincularFerramenta(t, check)" class="p-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 flex justify-between">
-                                                                    <span class="font-bold text-blue-900" x-text="t.code"></span>
+                                                                    <span class="font-bold text-[#0f1a4a]" x-text="t.code"></span>
                                                                     <span class="text-gray-500 truncate max-w-[180px]" x-text="t.name"></span>
                                                                 </div>
                                                             </template>
@@ -142,7 +158,7 @@
                                                         <div class="text-[11px] flex-1 truncate pr-2">
                                                             <span class="font-mono font-bold text-emerald-800" x-text="check.toolCode"></span>
                                                             <span class="text-gray-400 mx-1">|</span>
-                                                            <span class="text-emerald-700" x-text="check._toolName"></span>
+                                                            <span class="text-emerald-700 font-medium" x-text="check._toolName"></span>
                                                         </div>
                                                         <button @click="desvincularFerramenta(check)" class="text-[9px] flex-shrink-0 bg-red-100 text-red-600 px-2 py-1 rounded font-bold">Mudar</button>
                                                     </div>
@@ -163,7 +179,7 @@
                                             </div>
                                         </div>
                                     </template>
-                                    <button @click="adicionarCheck(indexEtapa, indexModulo)" class="w-full py-2 bg-blue-100 text-blue-700 rounded-lg text-xs font-bold hover:bg-blue-200 transition">+ Novo Check</button>
+                                    <button @click="adicionarCheck(indexEtapa, indexModulo)" class="w-full py-2 bg-blue-50 text-[#0f1a4a] rounded-lg text-xs font-bold hover:bg-blue-100 transition">+ Novo Check</button>
                                 </div>
                             </div>
                         </template>
@@ -172,21 +188,21 @@
                 </div>
             </template>
 
-            <button @click="adicionarEtapa()" class="w-full py-4 bg-gray-200 text-gray-700 border-2 border-dashed border-gray-400 rounded-xl font-bold hover:bg-gray-300 transition">+ Adicionar Etapa Principal</button>
+            <button @click="adicionarEtapa()" class="w-full py-4 bg-gray-200 text-gray-700 border-2 border-dashed border-gray-300 rounded-xl font-bold hover:bg-gray-300 transition">+ Adicionar Etapa Principal</button>
         </div>
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-2xl z-20 space-y-3">
-            <button @click="adicionarABiblioteca()" :class="isEditingIndex !== null ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-blue-600 hover:bg-blue-700'" class="w-full text-white py-3 rounded-xl font-bold text-sm shadow-sm transition" x-text="isEditingIndex !== null ? 'Salvar Alterações neste Procedimento' : 'Adicionar este à Biblioteca'"></button>
-            <button @click="exportarJSON()" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold text-sm shadow-lg transition">Finalizar e Baixar Arquivo Completo</button>
+            <button @click="adicionarABiblioteca()" :class="isEditingIndex !== null ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-[#0f1a4a] hover:bg-opacity-90'" class="w-full text-white py-3 rounded-xl font-bold text-sm shadow-sm transition" x-text="isEditingIndex !== null ? 'Salvar Alterações neste Procedimento' : 'Adicionar este à Biblioteca'"></button>
+            <button @click="exportarJSON()" class="w-full bg-[#e21a22] hover:bg-opacity-90 text-white py-3 rounded-xl font-bold text-sm shadow-lg transition">Finalizar e Baixar Arquivo Completo</button>
         </div>
     </div>
 
-    <!-- ==================== NOVA MODAL: LISTA DE EDIÇÃO ==================== -->
+    <!-- ==================== MODAL: LISTA DE EDIÇÃO ==================== -->
     <div x-show="modalEdicaoOpen" x-cloak class="fixed inset-0 z-50 flex flex-col justify-end p-0 bg-gray-900/80" @click.self="modalEdicaoOpen = false">
         <div class="bg-gray-100 w-full max-w-md mx-auto rounded-t-3xl overflow-hidden shadow-2xl flex flex-col max-h-[75vh]">
-            <div class="bg-slate-800 text-white p-4 flex justify-between items-center shadow-md z-10">
+            <div class="bg-[#0f1a4a] text-white p-4 flex justify-between items-center shadow-md z-10">
                 <span class="font-extrabold text-sm uppercase tracking-wider">Itens Salvos na Biblioteca</span>
-                <button @click="modalEdicaoOpen = false" class="w-8 h-8 flex-shrink-0 text-gray-400 hover:text-white rounded-full bg-slate-700 transition flex items-center justify-center">
+                <button @click="modalEdicaoOpen = false" class="w-8 h-8 flex-shrink-0 text-gray-400 hover:text-white rounded-full bg-white/10 transition flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
                 </button>
             </div>
@@ -201,12 +217,12 @@
                 <template x-for="(item, index) in bibliotecaEmCriacao" :key="index">
                     <div :class="isEditingIndex === index ? 'border-blue-500 shadow-md ring-2 ring-blue-200' : 'border-gray-200 shadow-sm'" class="bg-white p-4 rounded-xl border flex justify-between items-center transition-all">
                         <div class="flex-1 pr-2 truncate">
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest truncate" x-text="item.equipamento + ' • ' + item.ciclo"></p>
-                            <p class="text-sm font-black text-[#2a3f8a] uppercase truncate mt-0.5" x-text="item.processo"></p>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest truncate" x-text="item.equipamento + ' • ' + item.ciclo"></p>
+                            <p class="text-sm font-black text-[#0f1a4a] uppercase truncate mt-0.5" x-text="item.processo"></p>
                         </div>
                         <div class="flex gap-2 flex-shrink-0">
-                            <button @click="carregarItemParaEdicao(index)" class="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-xs font-bold hover:bg-blue-200 transition">Editar</button>
-                            <button @click="removerDaBiblioteca(index)" class="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-200 transition" title="Excluir">
+                            <button @click="carregarItemParaEdicao(index)" class="bg-blue-50 text-[#0f1a4a] px-3 py-2 rounded-lg text-xs font-bold hover:bg-blue-100 transition">Editar</button>
+                            <button @click="removerDaBiblioteca(index)" class="bg-red-50 text-red-600 p-2 rounded-lg hover:bg-red-100 transition" title="Excluir">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                             </button>
                         </div>
@@ -221,13 +237,18 @@
 
     <!-- ==================== TELA SELETOR 1: EQUIPAMENTO E CICLO ==================== -->
     <div x-show="ecra === 'seletor_inicio'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-white relative shadow-2xl">
-        <div class="bg-red-600 p-8 text-white text-center rounded-b-3xl shadow-lg relative pb-10">
-            <button @click="ecra = 'home'" class="absolute top-6 left-6 w-10 h-10 flex-shrink-0 bg-red-700 rounded-full hover:bg-red-800 transition flex items-center justify-center">
+        <div class="bg-[#0f1a4a] p-8 text-white text-center rounded-b-3xl shadow-lg relative pb-10">
+            <button @click="ecra = 'home'" class="absolute top-6 left-6 w-10 h-10 flex-shrink-0 bg-white/10 rounded-full hover:bg-white/20 transition flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
             </button>
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-2 opacity-90"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l5 5-3 3-3-1-1 1 2.5 4.5L11 23l1-1-1-3 3-3 5 5 1.2-.7c.4-.2.7-.6.6-1.1z"/></svg>
-            <h1 class="text-2xl font-extrabold tracking-tight">Arquiteto LATAM</h1>
-            <p class="text-red-100 mt-1 text-sm font-medium">Criador de Procedimento Avançado</p>
+            <div class="flex items-center justify-center gap-3 mb-2 mt-4">
+                <img src="https://i.imgur.com/x9rWRtr.png" class="h-9 w-auto flex-shrink-0" alt="Logo">
+                <div class="text-left">
+                    <h1 class="text-xl font-black tracking-tight leading-none">Arquiteto</h1>
+                    <span class="text-[10px] font-bold tracking-widest text-red-500 uppercase">LATAM</span>
+                </div>
+            </div>
+            <p class="text-blue-200 text-xs font-medium">Criador de Procedimento Avançado</p>
         </div>
 
         <div class="p-6 space-y-8 flex-1 mt-4">
@@ -236,8 +257,8 @@
                 <div class="grid grid-cols-2 gap-3">
                     <template x-for="equip in equipamentosDisponiveis" :key="equip">
                         <button @click="selecionarEquipamento(equip)" 
-                                :class="filtros.equipamento === equip ? 'bg-[#2a3f8a] text-white shadow-md' : 'bg-white text-[#2a3f8a] border border-gray-200 hover:bg-gray-50'"
-                                class="py-4 px-2 rounded-2xl font-bold text-sm transition-all uppercase" x-text="equip"></button>
+                                :class="filtros.equipamento === equip ? 'bg-[#0f1a4a] text-white shadow-md' : 'bg-white text-[#0f1a4a] border border-gray-200 hover:bg-gray-50'"
+                                class="py-4 px-2 rounded-2xl font-bold text-sm transition-all uppercase tracking-wide" x-text="equip"></button>
                     </template>
                 </div>
             </div>
@@ -247,8 +268,8 @@
                 <div class="grid grid-cols-3 gap-3">
                     <template x-for="ciclo in ciclosDisponiveis" :key="ciclo">
                         <button @click="filtros.ciclo = ciclo" 
-                                :class="filtros.ciclo === ciclo ? 'bg-red-600 text-white shadow-md border-transparent' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'"
-                                class="py-4 px-2 rounded-2xl font-bold text-xs transition-all uppercase" x-text="ciclo"></button>
+                                :class="filtros.ciclo === ciclo ? 'bg-[#e21a22] text-white shadow-md border-transparent' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'"
+                                class="py-4 px-2 rounded-2xl font-bold text-xs transition-all uppercase tracking-wider" x-text="ciclo"></button>
                     </template>
                 </div>
             </div>
@@ -264,25 +285,28 @@
     </div>
 
     <!-- ==================== TELA SELETOR 2: FLUXO ==================== -->
-    <div x-show="ecra === 'seletor_fluxo'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-gray-50 relative shadow-2xl">
-        <div class="bg-[#2a3f8a] p-6 text-white text-center shadow-md relative pb-8">
+    <div x-show="ecra === 'seletor_fluxo'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-[#f8fafc] relative shadow-2xl">
+        <div class="bg-[#0f1a4a] p-6 text-white shadow-md relative pb-8">
             <button @click="ecra = 'seletor_inicio'" class="absolute top-6 left-6 p-2 w-10 h-10 flex-shrink-0 bg-white/10 rounded-full hover:bg-white/20 transition flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
             </button>
-            <h1 class="text-2xl font-black tracking-wide uppercase mt-2" x-text="filtros.equipamento"></h1>
-            <p class="text-blue-200 mt-1 text-xs font-bold uppercase tracking-widest" x-text="filtros.ciclo"></p>
+            <div class="flex items-center justify-center gap-2 mt-2">
+                <img src="https://i.imgur.com/x9rWRtr.png" class="h-6 w-auto flex-shrink-0" alt="Logo">
+                <h1 class="text-2xl font-black tracking-tight uppercase" x-text="filtros.equipamento"></h1>
+            </div>
+            <p class="text-center text-blue-200 mt-1 text-xs font-bold uppercase tracking-widest" x-text="filtros.ciclo"></p>
         </div>
 
         <div class="p-6 space-y-4 flex-1 mt-4">
-            <label class="block text-center text-xs font-bold text-gray-500 uppercase tracking-widest mb-6">Selecione o fluxo de trabalho:</label>
+            <label class="block text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Selecione o fluxo de trabalho:</label>
             
-            <template x-for="proc in processosDisponiveis" :key="proc">
-                <button @click="iniciarOS(proc)" class="w-full bg-white border border-gray-200 p-5 rounded-3xl flex items-center justify-between hover:border-blue-300 hover:shadow-md transition-all group">
+            <template x-for="proc in procesosDisponiveis" :key="proc">
+                <button @click="iniciarOS(proc)" class="w-full bg-white border border-gray-100 p-5 rounded-3xl flex items-center justify-between hover:border-blue-300 hover:shadow-md transition-all group">
                     <div class="text-left flex-1 pr-4">
-                        <h3 class="text-lg font-black text-[#2a3f8a] uppercase" x-text="proc"></h3>
+                        <h3 class="text-lg font-black text-[#0f1a4a] uppercase" x-text="proc"></h3>
                         <p class="text-xs font-medium text-gray-400 mt-1">Iniciar procedimento operacional</p>
                     </div>
-                    <div class="w-10 h-10 flex-shrink-0 bg-blue-50 rounded-full flex items-center justify-center text-[#2a3f8a] group-hover:bg-blue-100 transition-colors">
+                    <div class="w-10 h-10 flex-shrink-0 bg-blue-50 rounded-full flex items-center justify-center text-[#0f1a4a] group-hover:bg-[#0f1a4a] group-hover:text-white transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
                     </div>
                 </button>
@@ -292,27 +316,28 @@
 
     <!-- ==================== TELA CHECKLIST ==================== -->
     <div x-show="ecra === 'checklist'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-gray-50 relative shadow-2xl">
-        <div class="bg-[#2a3f8a] text-white p-4 pt-6 shadow-md sticky top-0 z-20">
+        <div class="bg-[#0f1a4a] text-white p-4 pt-6 shadow-md sticky top-0 z-20">
             <div class="flex items-center justify-between mb-6">
                 <button @click="ecra = 'seletor_fluxo'" class="w-10 h-10 flex-shrink-0 bg-white/10 rounded-full hover:bg-white/20 transition flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
                 </button>
-                <div class="text-center flex-1 px-2">
-                    <h1 class="font-black text-xl tracking-wide uppercase truncate">
+                <div class="text-center flex-1 px-2 flex items-center justify-center gap-2">
+                    <img src="https://i.imgur.com/x9rWRtr.png" class="h-5 w-auto flex-shrink-0" alt="Logo">
+                    <h1 class="font-black text-base tracking-wide uppercase truncate">
                         <span x-text="procCarregado?.equipamento"></span> 
-                        <span class="text-sm text-blue-300 mx-1">-</span> 
-                        <span class="text-base text-blue-100" x-text="procCarregado?.processo"></span>
+                        <span class="text-xs text-blue-300 mx-0.5">-</span> 
+                        <span class="text-sm text-blue-100 font-medium" x-text="procCarregado?.processo"></span>
                     </h1>
                 </div>
                 <div class="w-10 flex-shrink-0"></div>
             </div>
 
             <div class="flex justify-between relative px-4">
-                <div class="absolute top-1/2 left-8 right-8 h-1 bg-[#1e2f6a] transform -translate-y-1/2 rounded-full"></div>
+                <div class="absolute top-1/2 left-8 right-8 h-1 bg-[#091030] transform -translate-y-1/2 rounded-full"></div>
                 <template x-for="(etapa, index) in procCarregado?.etapas" :key="index">
-                    <div class="flex flex-col items-center gap-1 bg-[#2a3f8a] px-2 relative z-10">
+                    <div class="flex flex-col items-center gap-1 bg-[#0f1a4a] px-2 relative z-10">
                         <div @click="etapaAtual = index"
-                             :class="etapaAtual === index ? 'border-white bg-red-600 text-white shadow-lg' : (etapaAtual > index ? 'border-green-400 bg-green-400 text-[#2a3f8a]' : 'border-[#1e2f6a] bg-[#2a3f8a] text-blue-400')"
+                             :class="etapaAtual === index ? 'border-white bg-[#e21a22] text-white shadow-lg' : (etapaAtual > index ? 'border-green-400 bg-green-400 text-[#0f1a4a]' : 'border-[#091030] bg-[#0f1a4a] text-blue-400')"
                              class="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center border-4 transition-colors duration-300 cursor-pointer">
                              <svg x-show="etapaAtual > index" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 12 2 2 4-4"/></svg>
                              <div x-show="etapaAtual <= index" class="font-bold text-sm" x-text="index + 1"></div>
@@ -327,7 +352,7 @@
             <p class="text-center text-xs font-bold text-gray-400 uppercase mb-5">Selecione a operação para visualizar os detalhes:</p>
             <div class="space-y-4">
                 <template x-for="(modulo, index) in procCarregado?.etapas[etapaAtual]?.modulos" :key="index">
-                    <button @click="abrirModulo(modulo, index)" class="w-full flex justify-between items-center bg-white border border-gray-200 shadow-sm p-5 rounded-2xl text-[#2a3f8a] font-black text-base uppercase tracking-wider transition-all active:scale-95 group">
+                    <button @click="abrirModulo(modulo, index)" class="w-full flex justify-between items-center bg-white border border-gray-100 shadow-sm p-5 rounded-2xl text-[#0f1a4a] font-black text-base uppercase tracking-wider transition-all active:scale-95 group">
                         <div class="flex items-center gap-4 text-left pr-3">
                             <div :class="isModuloCompleto(index) ? 'bg-green-500 border-green-500 text-white' : 'bg-gray-50 border-gray-300 text-gray-300'" class="w-8 h-8 flex-shrink-0 rounded-full border-2 flex items-center justify-center transition-colors">
                                 <svg x-show="isModuloCompleto(index)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m9 12 2 2 4-4"/></svg>
@@ -345,7 +370,7 @@
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-4 pb-8 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] z-20">
             <div class="max-w-md mx-auto flex justify-between gap-4">
                 <button @click="etapaAtual = Math.max(0, etapaAtual - 1)" :disabled="etapaAtual === 0" :class="etapaAtual === 0 ? 'bg-gray-50 text-gray-300 border border-gray-100' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'" class="flex-1 py-4 px-4 rounded-2xl font-bold text-sm transition-all cursor-pointer">Voltar</button>
-                <button x-show="etapaAtual < (procCarregado?.etapas.length || 1) - 1" @click="etapaAtual = Math.min(procCarregado.etapas.length - 1, etapaAtual + 1)" class="flex-none w-2/3 py-4 px-4 rounded-2xl font-bold text-sm transition-all cursor-pointer bg-[#ebf0fc] text-[#2a3f8a] hover:bg-blue-100">Avançar Etapa</button>
+                <button x-show="etapaAtual < (procCarregado?.etapas.length || 1) - 1" @click="etapaAtual = Math.min(procCarregado.etapas.length - 1, etapaAtual + 1)" class="flex-none w-2/3 py-4 px-4 rounded-2xl font-bold text-sm transition-all cursor-pointer bg-blue-50 text-[#0f1a4a] hover:bg-blue-100">Avançar Etapa</button>
                 <button x-show="etapaAtual === (procCarregado?.etapas.length || 1) - 1" @click="finalizar()" class="flex-none w-2/3 py-4 px-4 rounded-2xl font-bold text-sm transition-all cursor-pointer bg-green-500 text-white hover:bg-green-600 shadow-md">Finalizar OS</button>
             </div>
         </div>
@@ -358,9 +383,12 @@
                 <button @click="ecra = 'checklist'" class="w-10 h-10 flex-shrink-0 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
                 </button>
-                <div class="flex-1">
-                    <p class="text-[10px] font-bold text-blue-600 uppercase tracking-widest truncate" x-text="procCarregado?.processo"></p>
-                    <h2 class="text-lg font-black text-gray-800 leading-tight" x-text="moduloAtivo?.titulo"></h2>
+                <div class="flex-1 flex items-center gap-2 truncate">
+                    <img src="https://i.imgur.com/mL8cUvQ.png" class="h-5 w-auto flex-shrink-0" alt="Logo">
+                    <div class="truncate">
+                        <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest truncate" x-text="procCarregado?.processo"></p>
+                        <h2 class="text-base font-black text-[#0f1a4a] leading-tight truncate" x-text="moduloAtivo?.titulo"></h2>
+                    </div>
                 </div>
             </div>
         </div>
@@ -372,12 +400,12 @@
                         <svg x-show="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck]" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="m20 6-11 11-5-5"/></svg>
                     </div>
                     <div class="flex-1 pt-0.5 flex flex-col gap-3">
-                        <p :class="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck] ? 'text-gray-500 line-through' : 'text-gray-800 font-semibold'" class="text-sm leading-snug whitespace-pre-line" x-text="check.texto"></p>
+                        <p :class="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck] ? 'text-gray-500 line-through' : 'text-gray-800 font-bold'" class="text-sm leading-snug whitespace-pre-line" x-text="check.texto"></p>
                         
                         <div class="flex flex-wrap gap-2 w-full">
                             <template x-if="check.toolCode">
                                 <div class="flex gap-1.5 w-full">
-                                    <button @click="abrirModalFerramenta(check)" class="w-full inline-flex justify-center items-center gap-1.5 px-3 py-2 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors">
+                                    <button @click="abrirModalFerramenta(check)" class="w-full inline-flex justify-center items-center gap-1.5 px-3 py-2 bg-blue-50 text-[#0f1a4a] border border-blue-100 rounded-lg text-xs font-black uppercase tracking-wider transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                                         <span x-text="'Ref. ' + check.toolCode"></span>
                                     </button>
@@ -405,22 +433,22 @@
     <!-- ==================== MODAL (IMAGEM/FERRAMENTA) ==================== -->
     <div x-show="modalOpen" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/80" @click.self="modalOpen = false">
         <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
-            <div class="bg-gray-900 text-white p-4 flex justify-between items-center">
-                <span class="font-extrabold text-xs uppercase text-gray-300" x-text="modalData.tipoMenu"></span>
-                <button @click="modalOpen = false" class="w-8 h-8 flex-shrink-0 text-gray-400 hover:text-white rounded-full bg-gray-800 transition flex items-center justify-center">
+            <div class="bg-[#0f1a4a] text-white p-4 flex justify-between items-center shadow-md">
+                <span class="font-extrabold text-xs uppercase text-gray-200" x-text="modalData.tipoMenu"></span>
+                <button @click="modalOpen = false" class="w-8 h-8 flex-shrink-0 text-gray-400 hover:text-white rounded-full bg-white/10 transition flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
                 </button>
             </div>
-            <div class="flex-1 overflow-y-auto p-4 bg-gray-100 flex items-center justify-center relative">
+            <div class="flex-1 overflow-y-auto p-4 bg-gray-50 flex items-center justify-center relative">
                 <img :src="modalData.imgUrl ? modalData.imgUrl : 'https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?w=400'" class="max-h-64 object-contain rounded-xl shadow-md border border-gray-200 bg-white">
-                <div class="absolute bottom-4 bg-gray-900/90 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-lg" x-text="modalData.local"></div>
+                <div class="absolute bottom-4 bg-[#0f1a4a]/90 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full shadow-lg" x-text="modalData.local"></div>
             </div>
             <div class="bg-white p-4 border-t border-gray-200 space-y-3">
-                <div class="bg-blue-50 p-3 rounded-xl border border-blue-200" x-show="modalData.toolCode">
+                <div class="bg-blue-50 p-3 rounded-xl border border-blue-100" x-show="modalData.toolCode">
                     <p class="text-blue-500 font-bold uppercase tracking-wider mb-0.5 text-[9px]">Ferramenta / P/N</p>
-                    <p class="text-blue-900 font-black" x-text="modalData.toolCode"></p>
+                    <p class="text-[#0f1a4a] font-black" x-text="modalData.toolCode"></p>
                 </div>
-                <button @click="modalOpen = false" class="w-full py-3 bg-[#2a3f8a] text-white font-bold text-sm rounded-xl shadow-sm">Fechar Referência</button>
+                <button @click="modalOpen = false" class="w-full py-3 bg-[#0f1a4a] text-white font-bold text-sm rounded-xl shadow-sm hover:bg-opacity-90 transition">Fechar Referência</button>
             </div>
         </div>
     </div>
@@ -453,10 +481,9 @@
                     }
                 },
 
-                // === VARIÁVEIS DO CRIADOR / EDITOR ===
                 bibliotecaEmCriacao: [],
-                isEditingIndex: null, // Controla se estamos atualizando ou criando novo
-                modalEdicaoOpen: false, // Gaveta de edição
+                isEditingIndex: null,
+                modalEdicaoOpen: false,
                 proc: { equipamento: '', ciclo: '', processo: '', etapas: [] },
 
                 iniciarCriacao() {
@@ -465,7 +492,6 @@
                     this.ecra = 'criador';
                 },
                 
-                // Função para importar JSON para edição
                 importarParaEdicao(event) {
                     const file = event.target.files[0];
                     if (!file) return;
@@ -485,14 +511,12 @@
                     event.target.value = ''; 
                 },
 
-                // Função para carregar um item específico da biblioteca na tela
                 carregarItemParaEdicao(index) {
                     this.proc = JSON.parse(JSON.stringify(this.bibliotecaEmCriacao[index]));
                     this.isEditingIndex = index;
                     this.modalEdicaoOpen = false;
                 },
 
-                // Função para remover um fluxo da biblioteca
                 removerDaBiblioteca(index) {
                     if(confirm("Tem certeza que deseja excluir este fluxo definitivamente da biblioteca?")) {
                         this.bibliotecaEmCriacao.splice(index, 1);
@@ -526,10 +550,8 @@
                 vincularFerramenta(tool, checkRef) { checkRef.toolCode = tool.code; checkRef._toolName = tool.name; checkRef._local = `${tool.loc} > ${tool.sub}`; checkRef.imgUrl = tool.image && tool.image !== 'COLE_O_LINK_DO_IMGUR_AQUI' ? tool.image : ''; checkRef._resultados = []; },
                 desvincularFerramenta(checkRef) { checkRef.toolCode = ''; checkRef._toolName = ''; checkRef._local = ''; checkRef.imgUrl = ''; checkRef._resultados = []; },
 
-                // Salva o novo OU atualiza o que está sendo editado
                 adicionarABiblioteca() {
                     if(!this.proc.equipamento || !this.proc.ciclo || !this.proc.processo) { alert("Preencha Equipamento, Ciclo e Fluxo!"); return; }
-                    
                     if (this.isEditingIndex !== null) {
                         this.bibliotecaEmCriacao[this.isEditingIndex] = JSON.parse(JSON.stringify(this.proc));
                         this.isEditingIndex = null;
@@ -538,11 +560,9 @@
                         this.bibliotecaEmCriacao.push(JSON.parse(JSON.stringify(this.proc)));
                         alert("Novo procedimento ADICIONADO com sucesso!");
                     }
-                    
                     this.proc = { equipamento: this.proc.equipamento, ciclo: this.proc.ciclo, processo: '', etapas: [{ nome: '', modulos: [{ titulo: '', checks: [] }] }] };
                 },
 
-                // Exporta garantindo que não perca o que está na tela
                 exportarJSON() {
                     if (this.isEditingIndex !== null) {
                         this.bibliotecaEmCriacao[this.isEditingIndex] = JSON.parse(JSON.stringify(this.proc));
@@ -550,12 +570,7 @@
                     } else if (this.proc.equipamento && this.proc.processo && (this.proc.etapas.length > 0 && this.proc.etapas[0].nome !== '')) {
                         this.bibliotecaEmCriacao.push(JSON.parse(JSON.stringify(this.proc)));
                     }
-
-                    if(this.bibliotecaEmCriacao.length === 0) {
-                        alert("A biblioteca está vazia. Adicione ou edite um procedimento primeiro.");
-                        return;
-                    }
-
+                    if(this.bibliotecaEmCriacao.length === 0) { alert("A biblioteca está vazia. Adicione ou edite um procedimento primeiro."); return; }
                     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.bibliotecaEmCriacao, null, 2));
                     const node = document.createElement('a');
                     node.setAttribute("href", dataStr);
@@ -565,7 +580,6 @@
                     node.remove();
                 },
 
-                // === VARIÁVEIS DO EXECUTOR ===
                 bibliotecaCarregada: [],
                 filtros: { equipamento: '', ciclo: '', processo: '' },
                 procCarregado: null,
