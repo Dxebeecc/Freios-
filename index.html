@@ -19,7 +19,7 @@
             <div class="bg-red-600 p-8 text-white text-center rounded-b-3xl shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-3 opacity-90"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l5 5-3 3-3-1-1 1 2.5 4.5L11 23l1-1-1-3 3-3 5 5 1.2-.7c.4-.2.7-.6.6-1.1z"/></svg>
                 <h1 class="text-3xl font-extrabold tracking-tight">Setup LATAM</h1>
-                <p class="text-red-100 mt-1 font-medium">Plataforma V2 - Acervo Integrado</p>
+                <p class="text-red-100 mt-1 font-medium">Plataforma V2 - Recursos Independentes</p>
                 
                 <div class="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-black/20 text-white">
                     <span :class="isLoadingDb ? 'bg-orange-400 animate-pulse' : 'bg-green-400'" class="w-2 h-2 rounded-full"></span>
@@ -31,7 +31,7 @@
                 <button @click="iniciarCriacao()" :disabled="isLoadingDb" :class="isLoadingDb ? 'opacity-50 cursor-not-allowed' : ''" class="bg-white border-2 border-dashed border-blue-400 p-6 rounded-3xl text-left hover:border-blue-600 hover:bg-blue-50 transition-all flex items-center justify-between group">
                     <div>
                         <h3 class="text-xl font-black text-blue-900">1. Criar Check</h3>
-                        <p class="text-sm font-medium text-gray-500 mt-1">Montar procedimento usando o acervo</p>
+                        <p class="text-sm font-medium text-gray-500 mt-1">Montar procedimento combinando ferramentas e fotos</p>
                     </div>
                     <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
@@ -94,55 +94,57 @@
                                 
                                 <div class="space-y-3">
                                     <template x-for="(check, indexCheck) in modulo.checks" :key="indexCheck">
-                                        <div class="bg-gray-50 p-3 rounded border border-gray-200 text-sm space-y-2">
+                                        <div class="bg-gray-50 p-3 rounded border border-gray-200 text-sm space-y-3">
                                             <div class="flex justify-between items-center">
                                                 <span class="text-[10px] bg-slate-200 px-1.5 py-0.5 rounded font-bold text-slate-600" x-text="'Check #' + (indexCheck + 1)"></span>
                                                 <button @click="modulo.checks.splice(indexCheck, 1)" class="text-red-400 text-xs hover:text-red-600">Remover</button>
                                             </div>
                                             <textarea x-model="check.texto" placeholder="Instrução do check..." class="w-full p-2 border border-gray-200 rounded text-xs resize-none" rows="2"></textarea>
                                             
-                                            <div class="bg-white p-2 rounded border border-gray-100 space-y-2 relative">
-                                                <label class="text-[10px] font-black text-blue-900 uppercase tracking-wider block">🛠️ Referência Visual</label>
+                                            <div class="bg-white p-3 rounded border border-gray-100 space-y-3">
                                                 
-                                                <div x-show="!check.toolCode && !check._isManual" class="space-y-2">
-                                                    <div class="relative">
+                                                <div class="space-y-1 relative border-b border-gray-100 pb-2">
+                                                    <label class="text-[10px] font-black text-blue-900 uppercase tracking-wider block">🛠️ Ferramenta do Acervo (Sheets)</label>
+                                                    
+                                                    <div x-show="!check.toolCode">
                                                         <input type="text" 
-                                                               placeholder="Buscar ferramenta no Acervo..." 
+                                                               placeholder="Buscar ferramenta por P/N ou nome..." 
                                                                @input="buscarNoAcervo($event.target.value, check)"
-                                                               class="w-full text-xs border border-blue-200 rounded p-1.5 bg-blue-50/30 focus:bg-white outline-none">
+                                                               class="w-full text-xs border border-gray-300 rounded p-1.5 bg-gray-50 focus:bg-white outline-none">
                                                         
-                                                        <div x-show="check._resultados && check._resultados.length > 0" class="absolute z-30 left-0 right-0 bg-white border border-gray-300 rounded shadow-lg max-h-40 overflow-y-auto mt-1 text-xs">
+                                                        <div x-show="check._resultados && check._resultados.length > 0" class="absolute z-30 left-0 right-0 bg-white border border-gray-300 rounded shadow-lg max-h-35 overflow-y-auto mt-1 text-xs">
                                                             <template x-for="t in check._resultados" :key="t.id">
                                                                 <div @click="vincularFerramenta(t, check)" class="p-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 flex justify-between">
                                                                     <span class="font-bold text-blue-900" x-text="t.code"></span>
-                                                                    <span class="text-gray-500 truncate max-w-[200px]" x-text="t.name"></span>
+                                                                    <span class="text-gray-500 truncate max-w-[180px]" x-text="t.name"></span>
                                                                 </div>
                                                             </template>
                                                         </div>
                                                     </div>
 
-                                                    <div class="text-center text-[10px] text-gray-400 font-bold">OU</div>
+                                                    <div x-show="check.toolCode" class="flex items-center justify-between bg-emerald-50 border border-emerald-200 p-1.5 rounded">
+                                                        <div class="text-[11px]">
+                                                            <span class="font-mono font-bold text-emerald-800" x-text="check.toolCode"></span>
+                                                            <span class="text-gray-400 mx-1">|</span>
+                                                            <span class="text-emerald-700 truncate inline-block max-w-[180px]" x-text="check._toolName"></span>
+                                                        </div>
+                                                        <button @click="desvincularFerramenta(check)" class="text-[9px] bg-red-100 text-red-600 px-1 py-0.5 rounded font-bold">Mudar</button>
+                                                    </div>
+                                                </div>
 
-                                                    <div>
-                                                        <label class="text-[10px] font-bold text-gray-500">Carregar foto do dispositivo (Opcional):</label>
+                                                <div class="space-y-1 pt-1">
+                                                    <label class="text-[10px] font-black text-purple-900 uppercase tracking-wider block">📸 Apoio Visual (Foto Local/Manual)</label>
+                                                    
+                                                    <div x-show="!check.manualImg">
                                                         <input type="file" accept="image/*" @change="converterImagemBase64($event, check)" class="w-full text-xs border border-gray-300 rounded p-1 bg-gray-50">
                                                     </div>
-                                                </div>
 
-                                                <div x-show="check.toolCode" class="flex items-center justify-between bg-emerald-50 border border-emerald-200 p-2 rounded">
-                                                    <div class="text-xs">
-                                                        <p class="font-mono font-bold text-emerald-800" x-text="check.toolCode"></p>
-                                                        <p class="text-[10px] text-emerald-600 truncate max-w-[250px]" x-text="check._toolName"></p>
+                                                    <div x-show="check.manualImg" class="flex items-center justify-between bg-purple-50 border border-purple-200 p-1.5 rounded">
+                                                        <span class="text-[11px] font-bold text-purple-800 flex items-center gap-1">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v10H4V12M22 4H2v8h20V4z"/></svg> Imagem Adicionada
+                                                        </span>
+                                                        <button @click="check.manualImg = ''" class="text-[9px] bg-red-100 text-red-600 px-1 py-0.5 rounded font-bold">Excluir</button>
                                                     </div>
-                                                    <button @click="desvincularFerramenta(check)" class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">Mudar</button>
-                                                </div>
-
-                                                <div x-show="!check.toolCode && check._isManual" class="flex items-center justify-between bg-purple-50 border border-purple-200 p-2 rounded">
-                                                    <div class="text-xs">
-                                                        <p class="font-bold text-purple-800">📸 Foto Manual Anexada</p>
-                                                        <p class="text-[10px] text-purple-600">Salva no procedimento.</p>
-                                                    </div>
-                                                    <button @click="removerFotoManual(check)" class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">Remover</button>
                                                 </div>
 
                                             </div>
@@ -248,18 +250,29 @@
                     <div class="flex-1 pt-0.5 flex flex-col gap-2">
                         <p :class="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck] ? 'text-gray-500 line-through' : 'text-gray-800 font-semibold'" class="text-sm leading-snug whitespace-pre-line" x-text="check.texto"></p>
                         
-                        <template x-if="check.toolCode || check.imgUrl">
-                            <div class="flex gap-2 w-full mt-1">
-                                <button @click="abrirModal(check)" class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors">
+                        <div class="flex flex-wrap gap-2 w-full mt-1">
+                            
+                            <template x-if="check.toolCode">
+                                <div class="flex gap-1.5 flex-1 min-w-[140px]">
+                                    <button @click="abrirModalFerramenta(check)" class="flex-1 inline-flex justify-center items-center gap-1.5 px-3 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors">
+                                        <svg style="width: 14px; height: 14px;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                                        <span x-text="'Ref. ' + check.toolCode"></span>
+                                    </button>
+                                    
+                                    <button @click="alert('Localização no Acervo: ' + (check._local || 'Não especificada'))" class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-orange-100 text-orange-600 rounded-lg border border-orange-200 hover:bg-orange-200 transition shadow-sm" title="Ver Localização Física">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    </button>
+                                </div>
+                            </template>
+
+                            <template x-if="check.manualImg">
+                                <button @click="abrirModalManual(check)" class="flex-1 min-w-[120px] inline-flex justify-center items-center gap-1.5 px-3 py-2 bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors">
                                     <svg style="width: 14px; height: 14px;" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    <span x-text="check.toolCode ? ('Ref. ' + check.toolCode) : 'Apoio Visual'"></span>
+                                    <span>Apoio Visual</span>
                                 </button>
-                                
-                                <button class="w-10 h-10 flex-shrink-0 flex items-center justify-center bg-orange-100 text-orange-600 rounded-lg border border-orange-200 hover:bg-orange-200 transition shadow-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                                </button>
-                            </div>
-                        </template>
+                            </template>
+
+                        </div>
                     </div>
                 </div>
             </template>
@@ -275,7 +288,7 @@
     <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4" style="background-color: rgba(15, 23, 42, 0.8);" @click.self="modalOpen = false">
         <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col" style="max-height: 85vh;">
             <div class="bg-gray-900 text-white p-4 flex justify-between items-center">
-                <span class="font-extrabold text-xs uppercase text-gray-300">Apoio Visual / Tool</span>
+                <span class="font-extrabold text-xs uppercase text-gray-300" x-text="modalData.tipoMenu">Apoio Visual</span>
                 <button @click="modalOpen = false" class="p-1 text-gray-400 hover:text-white rounded-full bg-gray-800 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
                 </button>
@@ -305,7 +318,7 @@
                 isLoadingDb: true,
                 toolsList: [],
 
-                // Carrega o acervo assim que o app abre
+                // Puxa o acervo digital
                 async init() {
                     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRHBw7M7f58VdQOb22lLEl6759ApiWB0fFHdqU1I8p45seWfxR7C-_X5tBGmTw4-ErnJaurfch2v3Bw/pub?gid=1418929880&single=true&output=csv';
                     try {
@@ -339,32 +352,24 @@
                 proc: { modelo: '', processo: '', etapas: [] },
 
                 iniciarCriacao() {
-                    this.proc = { modelo: '', processo: '', etapas: [{ nome: '', modulos: [{ titulo: '', checks: [] }] }] };
+                    this.proc = { modelo: 'A320', processo: 'Desmontagem', etapas: [{ nome: 'Abertura', modulos: [{ titulo: 'Torque Tube', checks: [] }] }] };
                     this.ecra = 'criador';
                 },
                 adicionarEtapa() { this.proc.etapas.push({ nome: '', modulos: [] }); },
                 removerEtapa(i) { this.proc.etapas.splice(i, 1); },
                 adicionarModulo(iEtapa) { this.proc.etapas[iEtapa].modulos.push({ titulo: '', checks: [] }); },
                 removerModulo(iEtapa, iMod) { this.proc.etapas[iEtapa].modulos.splice(iMod, 1); },
-                adicionarCheck(iEtapa, iMod) { this.proc.etapas[iEtapa].modulos[iMod].checks.push({ texto: '', toolCode: '', imgUrl: '', _toolName: '', _local: '', _resultados: [], _isManual: false }); },
+                adicionarCheck(iEtapa, iMod) { this.proc.etapas[iEtapa].modulos[iMod].checks.push({ texto: '', toolCode: '', imgUrl: '', manualImg: '', _toolName: '', _local: '', _resultados: [] }); },
                 
-                // Mágica para converter Foto do PC em Base64
+                // Conversor da Foto Manual para Base64
                 converterImagemBase64(event, checkRef) {
                     const file = event.target.files[0];
                     if (!file) return;
                     const reader = new FileReader();
-                    reader.onload = (e) => { 
-                        checkRef.imgUrl = e.target.result; 
-                        checkRef._isManual = true; 
-                    };
+                    reader.onload = (e) => { checkRef.manualImg = e.target.result; };
                     reader.readAsDataURL(file);
                 },
-                removerFotoManual(checkRef) {
-                    checkRef.imgUrl = '';
-                    checkRef._isManual = false;
-                },
 
-                // Realiza a busca no acervo em tempo real
                 buscarNoAcervo(query, checkRef) {
                     if (!query || query.trim() === '') {
                         checkRef._resultados = [];
@@ -380,7 +385,6 @@
                     checkRef._local = `${tool.loc} > ${tool.sub}`;
                     checkRef.imgUrl = tool.image && tool.image !== 'COLE_O_LINK_DO_IMGUR_AQUI' ? tool.image : '';
                     checkRef._resultados = [];
-                    checkRef._isManual = false; // Garante que não mistura com a foto do PC
                 },
 
                 desvincularFerramenta(checkRef) {
@@ -409,7 +413,7 @@
                 moduloAtivoIndex: 0,
                 checksMarcados: {},
                 modalOpen: false,
-                modalData: { imgUrl: '', toolCode: '', local: '' },
+                modalData: { imgUrl: '', toolCode: '', local: '', tipoMenu: '' },
 
                 carregarProcedimento(event) {
                     const file = event.target.files[0];
@@ -454,11 +458,24 @@
                     return true;
                 },
 
-                abrirModal(checkData) {
+                // Abre modal focado na Ferramenta
+                abrirModalFerramenta(checkData) {
                     this.modalData = { 
                         imgUrl: checkData.imgUrl || '', 
                         toolCode: checkData.toolCode || '',
-                        local: checkData._local || (checkData._isManual ? 'Foto Anexada no Procedimento' : 'Consulte Acervo Físico')
+                        local: checkData._local || 'Consulte Acervo Físico',
+                        tipoMenu: 'Acervo Técnico de Ferramentas'
+                    };
+                    this.modalOpen = true;
+                },
+
+                // Abre modal focado na Imagem Manual de Apoio
+                abrirModalManual(checkData) {
+                    this.modalData = { 
+                        imgUrl: checkData.manualImg || '', 
+                        toolCode: '',
+                        local: 'Foto Anexada Manualmente ao Guia',
+                        tipoMenu: 'Apoio Visual / Esquema'
                     };
                     this.modalOpen = true;
                 },
