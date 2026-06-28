@@ -14,6 +14,7 @@
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans antialiased min-h-screen" x-data="appPlataforma">
 
+    <!-- ==================== TELA HOME ==================== -->
     <div x-show="ecra === 'home'" x-cloak class="min-h-screen flex flex-col items-center">
         <div class="w-full max-w-md bg-white min-h-screen shadow-2xl flex flex-col">
             <div class="bg-red-600 p-8 text-white text-center rounded-b-3xl shadow-lg">
@@ -30,8 +31,8 @@
             <div class="flex-1 p-6 flex flex-col justify-center space-y-6">
                 <button @click="iniciarCriacao()" :disabled="isLoadingDb" :class="isLoadingDb ? 'opacity-50 cursor-not-allowed' : ''" class="bg-white border-2 border-dashed border-blue-400 p-6 rounded-3xl text-left hover:border-blue-600 hover:bg-blue-50 transition-all flex items-center justify-between gap-4 group">
                     <div class="flex-1">
-                        <h3 class="text-xl font-black text-blue-900">1. Criar Catálogo</h3>
-                        <p class="text-sm font-medium text-gray-500 mt-1">Montar biblioteca de procedimentos</p>
+                        <h3 class="text-xl font-black text-blue-900">1. Criar / Editar</h3>
+                        <p class="text-sm font-medium text-gray-500 mt-1">Montar ou atualizar biblioteca de OS</p>
                     </div>
                     <div class="w-12 h-12 flex-shrink-0 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
@@ -58,30 +59,49 @@
         </div>
     </div>
 
+    <!-- ==================== TELA CRIADOR & EDITOR ==================== -->
     <div x-show="ecra === 'criador'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-gray-50 relative shadow-2xl pb-40">
         <div class="bg-slate-800 text-white p-4 shadow-md sticky top-0 z-20 flex justify-between items-center gap-2">
             <button @click="ecra = 'home'" class="w-10 h-10 flex-shrink-0 bg-slate-700 rounded-full hover:bg-slate-600 transition flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
             </button>
-            <h1 class="font-black text-lg tracking-wide flex-1 text-center truncate">Construir OS</h1>
-            <div class="bg-blue-500 text-xs px-3 py-1.5 rounded-full font-bold flex-shrink-0" x-text="bibliotecaEmCriacao.length + ' salvos'"></div>
+            <h1 class="font-black text-lg tracking-wide flex-1 text-center truncate" x-text="isEditingIndex !== null ? 'Editando OS' : 'Construir OS'"></h1>
+            <!-- NOVO: BOTÃO CLICÁVEL PARA ABRIR LISTA DE ITENS -->
+            <button @click="modalEdicaoOpen = true" class="bg-blue-500 hover:bg-blue-600 text-xs px-3 py-1.5 rounded-full font-bold flex-shrink-0 flex items-center gap-1 cursor-pointer transition shadow-sm">
+                <span x-text="bibliotecaEmCriacao.length + ' salvos'"></span>
+                <span class="text-[9px]">▼</span>
+            </button>
         </div>
 
         <div class="p-5 space-y-6">
-            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm space-y-4">
+            
+            <!-- NOVO: FAIXA PARA IMPORTAR JSON PARA EDIÇÃO -->
+            <div x-show="isEditingIndex === null && bibliotecaEmCriacao.length === 0" class="bg-yellow-50 border border-yellow-200 p-4 rounded-xl flex items-center justify-between shadow-sm">
+                <div class="text-xs text-yellow-800 pr-2">
+                    <span class="font-black block mb-0.5">Editar catálogo antigo?</span>
+                    Faça upload do JSON para alterar.
+                </div>
+                <label class="bg-yellow-500 hover:bg-yellow-600 text-white text-[10px] uppercase tracking-widest font-bold px-3 py-2 rounded-lg cursor-pointer transition shadow-sm flex-shrink-0">
+                    Importar
+                    <input type="file" accept=".json" class="hidden" @change="importarParaEdicao($event)">
+                </label>
+            </div>
+
+            <!-- CAIXA DE IDENTIFICAÇÃO -->
+            <div :class="isEditingIndex !== null ? 'border-blue-400 bg-blue-50' : 'border-gray-200 bg-white'" class="p-4 rounded-xl border shadow-sm space-y-4 transition-colors">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Equipamento</label>
-                        <input type="text" x-model="proc.equipamento" placeholder="Ex: A320, B777..." class="w-full border-b-2 border-gray-300 focus:border-blue-500 py-1 text-sm font-bold outline-none text-slate-800 uppercase">
+                        <input type="text" x-model="proc.equipamento" placeholder="Ex: A320, B777..." class="w-full border-b-2 border-gray-300 focus:border-blue-500 py-1 text-sm font-bold outline-none text-slate-800 uppercase bg-transparent">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Ciclo</label>
-                        <input type="text" x-model="proc.ciclo" placeholder="Ex: 2º Ciclo..." class="w-full border-b-2 border-gray-300 focus:border-blue-500 py-1 text-sm font-bold outline-none text-slate-800 uppercase">
+                        <input type="text" x-model="proc.ciclo" placeholder="Ex: 2º Ciclo..." class="w-full border-b-2 border-gray-300 focus:border-blue-500 py-1 text-sm font-bold outline-none text-slate-800 uppercase bg-transparent">
                     </div>
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Fluxo / Processo</label>
-                    <input type="text" x-model="proc.processo" placeholder="Ex: Desmontagem..." class="w-full border-b-2 border-gray-300 focus:border-blue-500 py-1 text-base font-bold outline-none text-slate-800">
+                    <input type="text" x-model="proc.processo" placeholder="Ex: Desmontagem..." class="w-full border-b-2 border-gray-300 focus:border-blue-500 py-1 text-base font-bold outline-none text-slate-800 bg-transparent">
                 </div>
             </div>
 
@@ -158,12 +178,53 @@
             <button @click="adicionarEtapa()" class="w-full py-4 bg-gray-200 text-gray-700 border-2 border-dashed border-gray-400 rounded-xl font-bold hover:bg-gray-300 transition">+ Adicionar Etapa Principal</button>
         </div>
 
+        <!-- BOTÕES DINÂMICOS: MUDAM SE ESTIVER EDITANDO -->
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-2xl z-20 space-y-3">
-            <button @click="adicionarABiblioteca()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-sm shadow-sm transition">Adicionar este à Biblioteca</button>
+            <button @click="adicionarABiblioteca()" :class="isEditingIndex !== null ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-blue-600 hover:bg-blue-700'" class="w-full text-white py-3 rounded-xl font-bold text-sm shadow-sm transition" x-text="isEditingIndex !== null ? 'Salvar Alterações neste Procedimento' : 'Adicionar este à Biblioteca'"></button>
             <button @click="exportarJSON()" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-bold text-sm shadow-lg transition">Finalizar e Baixar Arquivo Completo</button>
         </div>
     </div>
 
+    <!-- ==================== NOVA MODAL: LISTA DE EDIÇÃO ==================== -->
+    <div x-show="modalEdicaoOpen" x-cloak class="fixed inset-0 z-50 flex flex-col justify-end p-0 bg-gray-900/80" @click.self="modalEdicaoOpen = false">
+        <div class="bg-gray-100 w-full max-w-md mx-auto rounded-t-3xl overflow-hidden shadow-2xl flex flex-col max-h-[75vh]">
+            <div class="bg-slate-800 text-white p-4 flex justify-between items-center shadow-md z-10">
+                <span class="font-extrabold text-sm uppercase tracking-wider">Itens Salvos na Biblioteca</span>
+                <button @click="modalEdicaoOpen = false" class="w-8 h-8 flex-shrink-0 text-gray-400 hover:text-white rounded-full bg-slate-700 transition flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-3">
+                <template x-if="bibliotecaEmCriacao.length === 0">
+                    <div class="text-center py-8 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mx-auto mb-3 opacity-50"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        <p class="font-bold text-sm">Biblioteca vazia.</p>
+                        <p class="text-xs mt-1">Crie um OS ou importe um JSON.</p>
+                    </div>
+                </template>
+                <template x-for="(item, index) in bibliotecaEmCriacao" :key="index">
+                    <div :class="isEditingIndex === index ? 'border-blue-500 shadow-md ring-2 ring-blue-200' : 'border-gray-200 shadow-sm'" class="bg-white p-4 rounded-xl border flex justify-between items-center transition-all">
+                        <div class="flex-1 pr-2 truncate">
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest truncate" x-text="item.equipamento + ' • ' + item.ciclo"></p>
+                            <p class="text-sm font-black text-[#2a3f8a] uppercase truncate mt-0.5" x-text="item.processo"></p>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button @click="carregarItemParaEdicao(index)" class="bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-xs font-bold hover:bg-blue-200 transition">Editar</button>
+                            <button @click="removerDaBiblioteca(index)" class="bg-red-100 text-red-600 p-2 rounded-lg hover:bg-red-200 transition" title="Excluir">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <!-- Botão extra para fechar a modal de forma mais fácil -->
+            <div class="bg-white border-t border-gray-200 p-4">
+                 <button @click="modalEdicaoOpen = false" class="w-full py-3 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition text-sm">Voltar para o Criador</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TELA SELETOR 1: EQUIPAMENTO E CICLO ==================== -->
     <div x-show="ecra === 'seletor_inicio'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-white relative shadow-2xl">
         <div class="bg-red-600 p-8 text-white text-center rounded-b-3xl shadow-lg relative pb-10">
             <button @click="ecra = 'home'" class="absolute top-6 left-6 w-10 h-10 flex-shrink-0 bg-red-700 rounded-full hover:bg-red-800 transition flex items-center justify-center">
@@ -207,6 +268,7 @@
         </div>
     </div>
 
+    <!-- ==================== TELA SELETOR 2: FLUXO ==================== -->
     <div x-show="ecra === 'seletor_fluxo'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-gray-50 relative shadow-2xl">
         <div class="bg-[#2a3f8a] p-6 text-white text-center shadow-md relative pb-8">
             <button @click="ecra = 'seletor_inicio'" class="absolute top-6 left-6 p-2 w-10 h-10 flex-shrink-0 bg-white/10 rounded-full hover:bg-white/20 transition flex items-center justify-center">
@@ -233,6 +295,7 @@
         </div>
     </div>
 
+    <!-- ==================== TELA CHECKLIST ==================== -->
     <div x-show="ecra === 'checklist'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-gray-50 relative shadow-2xl">
         <div class="bg-[#2a3f8a] text-white p-4 pt-6 shadow-md sticky top-0 z-20">
             <div class="flex items-center justify-between mb-6">
@@ -293,6 +356,7 @@
         </div>
     </div>
 
+    <!-- ==================== TELA MODULE ==================== -->
     <div x-show="ecra === 'module'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-gray-50 relative shadow-2xl">
         <div class="bg-white p-4 pt-6 shadow-sm sticky top-0 z-20 border-b border-gray-200">
             <div class="flex items-center gap-4">
@@ -346,7 +410,8 @@
         </div>
     </div>
 
-    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/80" @click.self="modalOpen = false">
+    <!-- ==================== MODAL (IMAGEM/FERRAMENTA) ==================== -->
+    <div x-show="modalOpen" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/80" @click.self="modalOpen = false">
         <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
             <div class="bg-gray-900 text-white p-4 flex justify-between items-center">
                 <span class="font-extrabold text-xs uppercase text-gray-300" x-text="modalData.tipoMenu"></span>
@@ -368,6 +433,7 @@
         </div>
     </div>
 
+    <!-- ==================== SCRIPT ==================== -->
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('appPlataforma', () => ({
@@ -395,13 +461,58 @@
                     }
                 },
 
+                // === VARIÁVEIS DO CRIADOR / EDITOR ===
                 bibliotecaEmCriacao: [],
+                isEditingIndex: null, // Controla se estamos atualizando ou criando novo
+                modalEdicaoOpen: false, // Gaveta de edição
                 proc: { equipamento: '', ciclo: '', processo: '', etapas: [] },
 
                 iniciarCriacao() {
                     this.proc = { equipamento: 'A320', ciclo: '1º Ciclo', processo: 'Desmontagem', etapas: [{ nome: 'Abertura', modulos: [{ titulo: 'Torque Tube', checks: [] }] }] };
+                    this.isEditingIndex = null;
                     this.ecra = 'criador';
                 },
+                
+                // NOVO: Função para importar JSON para edição
+                importarParaEdicao(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            let dados = JSON.parse(e.target.result);
+                            if(!Array.isArray(dados)) { dados = [dados]; }
+                            this.bibliotecaEmCriacao = dados;
+                            this.isEditingIndex = null;
+                            alert(`Arquivo importado com sucesso! Clique no botão azul no topo da tela (${this.bibliotecaEmCriacao.length} salvos) para escolher o que editar.`);
+                        } catch(error) {
+                            alert("Erro ao ler o arquivo JSON. Certifique-se de que é um arquivo válido.");
+                        }
+                    };
+                    reader.readAsText(file);
+                    event.target.value = ''; 
+                },
+
+                // NOVO: Função para carregar um item específico da biblioteca na tela
+                carregarItemParaEdicao(index) {
+                    this.proc = JSON.parse(JSON.stringify(this.bibliotecaEmCriacao[index]));
+                    this.isEditingIndex = index;
+                    this.modalEdicaoOpen = false;
+                },
+
+                // NOVO: Função para remover um fluxo da biblioteca
+                removerDaBiblioteca(index) {
+                    if(confirm("Tem certeza que deseja excluir este fluxo definitivamente da biblioteca?")) {
+                        this.bibliotecaEmCriacao.splice(index, 1);
+                        if(this.isEditingIndex === index) {
+                            this.isEditingIndex = null;
+                            this.proc = { equipamento: '', ciclo: '', processo: '', etapas: [{ nome: '', modulos: [{ titulo: '', checks: [] }] }] };
+                        } else if (this.isEditingIndex > index) {
+                            this.isEditingIndex--;
+                        }
+                    }
+                },
+
                 adicionarEtapa() { this.proc.etapas.push({ nome: '', modulos: [] }); },
                 removerEtapa(i) { this.proc.etapas.splice(i, 1); },
                 adicionarModulo(iEtapa) { this.proc.etapas[iEtapa].modulos.push({ titulo: '', checks: [] }); },
@@ -423,15 +534,36 @@
                 vincularFerramenta(tool, checkRef) { checkRef.toolCode = tool.code; checkRef._toolName = tool.name; checkRef._local = `${tool.loc} > ${tool.sub}`; checkRef.imgUrl = tool.image && tool.image !== 'COLE_O_LINK_DO_IMGUR_AQUI' ? tool.image : ''; checkRef._resultados = []; },
                 desvincularFerramenta(checkRef) { checkRef.toolCode = ''; checkRef._toolName = ''; checkRef._local = ''; checkRef.imgUrl = ''; checkRef._resultados = []; },
 
+                // ATUALIZADO: Salva o novo OU atualiza o que está sendo editado
                 adicionarABiblioteca() {
                     if(!this.proc.equipamento || !this.proc.ciclo || !this.proc.processo) { alert("Preencha Equipamento, Ciclo e Fluxo!"); return; }
-                    this.bibliotecaEmCriacao.push(JSON.parse(JSON.stringify(this.proc)));
-                    // Limpa as etapas, mas mantém Equipamento e Ciclo para facilitar adicionar outro Fluxo
+                    
+                    if (this.isEditingIndex !== null) {
+                        this.bibliotecaEmCriacao[this.isEditingIndex] = JSON.parse(JSON.stringify(this.proc));
+                        this.isEditingIndex = null;
+                        alert("Procedimento ATUALIZADO com sucesso!");
+                    } else {
+                        this.bibliotecaEmCriacao.push(JSON.parse(JSON.stringify(this.proc)));
+                        alert("Novo procedimento ADICIONADO com sucesso!");
+                    }
+                    
                     this.proc = { equipamento: this.proc.equipamento, ciclo: this.proc.ciclo, processo: '', etapas: [{ nome: '', modulos: [{ titulo: '', checks: [] }] }] };
                 },
 
+                // ATUALIZADO: Exporta garantindo que não perca o que está na tela
                 exportarJSON() {
-                    if(this.bibliotecaEmCriacao.length === 0) { this.bibliotecaEmCriacao.push(JSON.parse(JSON.stringify(this.proc))); }
+                    if (this.isEditingIndex !== null) {
+                        this.bibliotecaEmCriacao[this.isEditingIndex] = JSON.parse(JSON.stringify(this.proc));
+                        this.isEditingIndex = null;
+                    } else if (this.proc.equipamento && this.proc.processo && (this.proc.etapas.length > 0 && this.proc.etapas[0].nome !== '')) {
+                        this.bibliotecaEmCriacao.push(JSON.parse(JSON.stringify(this.proc)));
+                    }
+
+                    if(this.bibliotecaEmCriacao.length === 0) {
+                        alert("A biblioteca está vazia. Adicione ou edite um procedimento primeiro.");
+                        return;
+                    }
+
                     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.bibliotecaEmCriacao, null, 2));
                     const node = document.createElement('a');
                     node.setAttribute("href", dataStr);
@@ -441,6 +573,7 @@
                     node.remove();
                 },
 
+                // === VARIÁVEIS DO EXECUTOR ===
                 bibliotecaCarregada: [],
                 filtros: { equipamento: '', ciclo: '', processo: '' },
                 procCarregado: null,
@@ -448,8 +581,8 @@
                 moduloAtivo: null,
                 moduloAtivoIndex: 0,
                 checksMarcados: {},
-                modalOpen: false,
                 modalData: { imgUrl: '', toolCode: '', local: '', tipoMenu: '' },
+                modalOpen: false,
 
                 carregarProcedimento(event) {
                     const file = event.target.files[0];
