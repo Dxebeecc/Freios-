@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arquiteto LATAM - Criador de Procedimento Avançado</title>
+    <!-- Importando a fonte Montserrat para ficar idêntica à identidade da marca -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
@@ -20,11 +21,13 @@
 </head>
 <body class="antialiased min-h-screen" :class="darkMode ? 'bg-[#091030] text-gray-100' : 'bg-[#f8fafc] text-gray-800'" x-data="appPlataforma">
 
+    <!-- BOTÃO FLUTUANTE GLOBAL DE MODO CLARO/ESCURO -->
     <button @click="toggleDarkMode()" class="fixed bottom-6 right-6 w-12 h-12 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all active:scale-90" :class="darkMode ? 'bg-white text-[#0f1a4a]' : 'bg-[#0f1a4a] text-white'">
         <svg x-show="darkMode" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.07" x2="5.64" y2="17.66"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         <svg x-show="!darkMode" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
 
+    <!-- ==================== TELA HOME ==================== -->
     <div x-show="ecra === 'home'" x-cloak class="min-h-screen flex flex-col items-center">
         <div class="w-full max-w-md min-h-screen shadow-2xl flex flex-col transition-colors duration-300" :class="darkMode ? 'bg-[#0f1a4a]' : 'bg-white'">
             
@@ -100,8 +103,10 @@
         </div>
     </div>
 
+    <!-- ==================== TELA CRIADOR & EDITOR (PAINEL DUPLO 50/50 COM ALERTAS ALINHADOS) ==================== -->
     <div x-show="ecra === 'criador'" x-cloak class="min-h-screen lg:h-screen w-full lg:flex lg:flex-row transition-colors duration-300 lg:overflow-hidden" :class="darkMode ? 'bg-[#091030]' : 'bg-[#f8fafc]'">
         
+        <!-- PAINEL ESQUERDO: FORMULÁRIO DE CONSTRUÇÃO (AGORA EM 50%) -->
         <div class="w-full max-w-md mx-auto relative shadow-2xl flex flex-col min-h-screen lg:min-h-0 lg:h-screen lg:w-1/2 lg:max-w-none lg:mx-0 lg:border-r z-10" :class="darkMode ? 'bg-[#091030] border-blue-950' : 'bg-[#f8fafc] border-gray-200'">
             
             <div class="bg-[#0f1a4a] text-white p-4 pt-6 shadow-md sticky top-0 z-20 flex-shrink-0">
@@ -165,24 +170,29 @@
                                         <div class="space-y-4">
                                             <template x-for="(check, indexCheck) in modulo.checks" :key="indexCheck">
                                                 
+                                                <!-- CAIXA DO CHECK COM COR DINÂMICA E BOTÕES ALINHADOS -->
                                                 <div class="border rounded-xl p-4 space-y-4 relative transition-colors" :class="getContainerClass(check.tipo, darkMode, false, true)">
                                                     
-                                                    <div class="absolute top-2 right-12 flex items-center gap-1 px-2 py-1.5 rounded-lg border transition cursor-pointer z-10" :class="darkMode ? 'bg-white/5 border-white/10 hover:bg-white/10' : 'bg-black/5 border-black/10 hover:bg-black/10'">
-                                                        <select x-model="check.tipo" class="text-[8px] font-black uppercase tracking-widest bg-transparent outline-none cursor-pointer appearance-none text-right pr-2 w-full" :class="getTextClass(check.tipo, darkMode, false)">
-                                                            <option value="normal" class="text-gray-900">PADRÃO</option>
-                                                            <option value="warning" class="text-red-600">WARNING (PERIGO)</option>
-                                                            <option value="caution" class="text-orange-500">CAUTION (CUIDADO)</option>
-                                                            <option value="dica_tecnica" class="text-blue-600">DICA TÉCNICA</option>
-                                                            <option value="dica_operacional" class="text-blue-500">DICA OPER.</option>
-                                                        </select>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="opacity-50 absolute right-1 pointer-events-none" :class="darkMode ? 'text-white' : 'text-black'"><path d="m6 9 6 6 6-6"/></svg>
+                                                    <!-- CONTROLES SUPERIORES (SETA E X) ALINHADOS À DIREITA -->
+                                                    <div class="absolute top-3 right-3 flex items-center gap-1 z-10">
+                                                        <!-- SETINHA (SELETOR DE TIPO) -->
+                                                        <div class="relative flex items-center justify-center w-7 h-7 rounded-full shadow-sm hover:scale-110 transition cursor-pointer" :class="darkMode ? 'bg-black/60 text-gray-400 hover:text-white' : 'bg-white/90 text-gray-500 hover:text-black'" title="Alterar Nível de Alerta">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m6 9 6 6 6-6"/></svg>
+                                                            <select x-model="check.tipo" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                                                <option value="normal">Padrão</option>
+                                                                <option value="warning">Warning (Perigo Humano)</option>
+                                                                <option value="caution">Caution (Perigo Peça)</option>
+                                                                <option value="dica_tecnica">Dica Técnica</option>
+                                                                <option value="dica_operacional">Dica Operacional</option>
+                                                            </select>
+                                                        </div>
+                                                        <!-- X (EXCLUIR) -->
+                                                        <button @click="modulo.checks.splice(indexCheck, 1)" class="flex items-center justify-center w-7 h-7 rounded-full shadow-sm hover:scale-110 transition text-red-500" :class="darkMode ? 'bg-black/60' : 'bg-white/90'" title="Excluir Check">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                                                        </button>
                                                     </div>
 
-                                                    <button @click="modulo.checks.splice(indexCheck, 1)" class="text-red-400 absolute top-3 right-3 hover:scale-110 transition z-10 bg-white/80 dark:bg-black/80 rounded-full p-1 shadow-sm">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                                                    </button>
-
-                                                    <div class="flex gap-3 pt-6">
+                                                    <div class="flex gap-3 pr-16">
                                                         <div class="w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5" :class="darkMode ? 'border-slate-600' : 'border-gray-300'"></div>
                                                         <div class="flex-1 flex flex-col">
                                                             <span x-show="check.tipo && check.tipo !== 'normal'" class="text-[9px] font-black uppercase mb-1" :class="getTextClass(check.tipo, darkMode, false)" x-text="getPrefix(check.tipo)"></span>
@@ -243,6 +253,7 @@
             </div>
         </div>
 
+        <!-- PAINEL DIREITO: SIMULADOR SMARTPHONE (AGORA 50% DA TELA) -->
         <div class="hidden lg:flex flex-1 bg-slate-950/20 dark:bg-black/40 h-screen sticky top-0 items-center justify-center p-6 overflow-hidden border-l w-1/2" :class="darkMode ? 'border-blue-950/40' : 'border-gray-200'" x-data="{ simEtapa: 0 }">
             <div class="w-[360px] h-[730px] bg-zinc-900 rounded-[50px] p-3.5 shadow-2xl border-4 border-zinc-800 relative flex flex-col ring-1 ring-black/40">
                 
@@ -285,6 +296,7 @@
                                 <div class="space-y-2">
                                     <template x-for="ch in mod.checks">
                                         
+                                        <!-- CAIXA DO SIMULADOR RESPONDENDO À COR DO ALERTA -->
                                         <div class="border rounded-xl p-2.5 shadow-sm space-y-1.5 transition-all" :class="getContainerClass(ch.tipo, darkMode, false, false)">
                                             <div class="flex gap-2.5 items-start">
                                                 <div class="w-4 h-4 rounded-full border flex-shrink-0 mt-0.5" :class="darkMode ? 'border-slate-600' : 'border-gray-300'"></div>
@@ -312,6 +324,7 @@
         </div>
     </div>
 
+    <!-- ==================== MODAL: GAVETA DE ITENS SALVOS DA BIBLIOTECA ==================== -->
     <div x-show="modalEdicaoOpen" x-cloak class="fixed inset-0 z-[60] flex flex-col justify-end p-0 bg-gray-900/80" @click.self="modalEdicaoOpen = false">
         <div class="w-full max-w-md mx-auto rounded-t-[40px] overflow-hidden shadow-2xl flex flex-col max-h-[85vh] transition-colors" :class="darkMode ? 'bg-[#091030]' : 'bg-gray-50'">
             <div class="bg-[#0f1a4a] text-white p-6 flex justify-between items-center border-b border-blue-950">
@@ -351,6 +364,7 @@
         </div>
     </div>
 
+    <!-- ==================== TELA SELETOR 1: EQUIPAMENTO E CICLO ==================== -->
     <div x-show="ecra === 'seletor_inicio'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto relative shadow-2xl transition-colors" :class="darkMode ? 'bg-[#0f1a4a]' : 'bg-white'">
         <div class="bg-[#0f1a4a] p-8 text-white text-center rounded-b-3xl shadow-lg relative pb-10 border-b" :class="darkMode ? 'border-blue-950' : 'border-transparent'">
             <button @click="ecra = 'home'" class="absolute top-6 left-6 w-10 h-10 flex-shrink-0 bg-white/10 rounded-full hover:bg-white/20 transition flex items-center justify-center text-white">
@@ -390,6 +404,7 @@
         </div>
     </div>
 
+    <!-- ==================== TELA SELETOR 2: FLUXO DE TRABALHO ==================== -->
     <div x-show="ecra === 'seletor_fluxo'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto relative shadow-2xl transition-colors" :class="darkMode ? 'bg-[#091030]' : 'bg-[#f8fafc]'">
         <div class="bg-[#0f1a4a] p-6 text-white shadow-md relative pb-8 rounded-b-[40px] border-b border-blue-950">
             <button @click="ecra = 'seletor_inicio'" class="absolute top-6 left-6 p-2 w-10 h-10 flex-shrink-0 bg-white/10 rounded-full hover:bg-white/20 transition flex items-center justify-center text-white">
@@ -417,6 +432,7 @@
         </div>
     </div>
 
+    <!-- ==================== TELA CHECKLIST PRINCIPAL ==================== -->
     <div x-show="ecra === 'checklist'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto relative shadow-2xl transition-colors" :class="darkMode ? 'bg-[#091030]' : 'bg-gray-50'">
         <div class="bg-[#0f1a4a] text-white p-4 pt-6 shadow-md sticky top-0 z-20 border-b border-blue-950">
             <div class="flex items-center justify-between mb-6">
@@ -481,6 +497,7 @@
         </div>
     </div>
 
+    <!-- ==================== TELA INTERNA DO MÓDULO (OS EM EXECUÇÃO) ==================== -->
     <div x-show="ecra === 'module'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto relative shadow-2xl transition-colors" :class="darkMode ? 'bg-[#091030]' : 'bg-gray-50'">
         <div class="p-5 pt-7 shadow-sm sticky top-0 z-20 border-b transition-colors" :class="darkMode ? 'bg-[#0f1a4a] border-blue-950 text-white' : 'bg-white border-gray-100'">
             <div class="flex items-center gap-4">
@@ -500,6 +517,7 @@
         <div class="flex-1 p-4 pb-32 overflow-y-auto space-y-4">
             <template x-for="(check, indexCheck) in moduloAtivo?.checks" :key="indexCheck">
                 
+                <!-- CAIXA DO CHECK EM EXECUÇÃO RESPONDENDO AO NÍVEL DE ALERTA -->
                 <div :class="getContainerClass(check.tipo, darkMode, checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck], false)" class="p-5 rounded-[28px] border-2 flex gap-4 items-start transition-all duration-300 shadow-sm">
                     <div @click="toggleCheck(indexCheck)" :class="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck] ? 'bg-green-500 border-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]' : (darkMode ? 'border-blue-900 bg-blue-950/60' : 'border-gray-200 bg-gray-50')" class="mt-0.5 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all cursor-pointer bg-white">
                         <svg x-show="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck]" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4"><path d="m20 6-11 11-5-5"/></svg>
@@ -536,6 +554,7 @@
         </div>
     </div>
 
+    <!-- ==================== MODAL DE REFERÊNCIA/FOTO ==================== -->
     <div x-show="modalOpen" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-5 bg-[#091030]/95" @click.self="modalOpen = false">
         <div class="bg-white w-full max-w-sm rounded-[40px] overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
             <div class="bg-[#0f1a4a] text-white p-5 flex justify-between items-center shadow-lg">
@@ -558,6 +577,7 @@
         </div>
     </div>
 
+    <!-- ==================== SCRIPT PRINCIPAL ==================== -->
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('appPlataforma', () => ({
