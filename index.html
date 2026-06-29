@@ -19,12 +19,25 @@
 </head>
 <body class="bg-[#f8fafc] text-gray-800 antialiased min-h-screen" x-data="appPlataforma">
 
-    <!-- ==================== TELA HOME (Fundo Azul Marinho Oficial) ==================== -->
+    <!-- ==================== TELA HOME ==================== -->
     <div x-show="ecra === 'home'" x-cloak class="min-h-screen flex flex-col items-center">
         <div class="w-full max-w-md bg-white min-h-screen shadow-2xl flex flex-col">
-            <div class="bg-[#0f1a4a] p-8 text-white text-center rounded-b-3xl shadow-lg">
-                <!-- Logo LATAM para fundo escuro (Branco e Vermelho) -->
-                <div class="flex items-center justify-center gap-3 mb-4">
+            
+            <!-- NOVO: MENU SUPERIOR COM LINKS -->
+            <div class="bg-[#091030] px-5 py-3 flex justify-between items-center text-[10px] font-bold text-white uppercase tracking-widest shadow-inner">
+                <a href="#" @click.prevent="alert('Coloque o link do seu PDF Tutorial na tag href do código!')" class="flex items-center gap-1.5 hover:text-red-400 transition cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    Tutorial PDF
+                </a>
+                <!-- Link direto para a planilha do Acervo -->
+                <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRHBw7M7f58VdQOb22lLEl6759ApiWB0fFHdqU1I8p45seWfxR7C-_X5tBGmTw4-ErnJaurfch2v3Bw/pub?output=html" target="_blank" class="flex items-center gap-1.5 hover:text-blue-400 transition cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+                    Acervo Técnico
+                </a>
+            </div>
+
+            <div class="bg-[#0f1a4a] p-8 text-white text-center rounded-b-3xl shadow-lg relative z-10">
+                <div class="flex items-center justify-center gap-3 mb-4 mt-2">
                     <img src="https://i.imgur.com/x9rWRtr.png" class="h-10 w-auto flex-shrink-0" alt="Logo LATAM">
                     <div class="text-left">
                         <h1 class="text-2xl font-black tracking-tight leading-none">Arquiteto</h1>
@@ -35,55 +48,68 @@
                 
                 <div class="mt-5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-white">
                     <span :class="isLoadingDb ? 'bg-orange-400 animate-pulse' : 'bg-green-400'" class="w-2 h-2 rounded-full flex-shrink-0"></span>
-                    <span x-text="isLoadingDb ? 'Sincronizando Acervo...' : 'Acervo Digital Pronto'" class="truncate"></span>
+                    <span x-text="isLoadingDb ? 'Sincronizando Banco de Dados...' : 'Acervo Digital e Rede Prontos'" class="truncate"></span>
                 </div>
             </div>
 
-            <div class="flex-1 p-6 flex flex-col justify-center space-y-6">
-                <button @click="iniciarCriacao()" :disabled="isLoadingDb" :class="isLoadingDb ? 'opacity-50 cursor-not-allowed' : ''" class="bg-white border-2 border-dashed border-[#2a3f8a] p-6 rounded-3xl text-left hover:border-red-500 hover:bg-red-50/30 transition-all flex items-center justify-between gap-4 group">
+            <div class="flex-1 p-6 flex flex-col justify-center space-y-5">
+                
+                <button @click="iniciarCriacao()" :disabled="isLoadingDb" :class="isLoadingDb ? 'opacity-50 cursor-not-allowed' : ''" class="bg-white border-2 border-dashed border-[#2a3f8a] p-5 rounded-3xl text-left hover:border-red-500 hover:bg-red-50/30 transition-all flex items-center justify-between gap-4 group shadow-sm">
                     <div class="flex-1">
-                        <h3 class="text-xl font-black text-[#0f1a4a]">1. Criar / Editar</h3>
-                        <p class="text-sm font-medium text-gray-400 mt-1">Montar ou atualizar biblioteca de OS</p>
+                        <h3 class="text-lg font-black text-[#0f1a4a]">1. Criar / Editar</h3>
+                        <p class="text-xs font-medium text-gray-400 mt-1">Montar ou atualizar biblioteca de OS</p>
                     </div>
-                    <div class="w-12 h-12 flex-shrink-0 bg-blue-50 rounded-full flex items-center justify-center text-[#2a3f8a] group-hover:bg-red-500 group-hover:text-white transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                    <div class="w-10 h-10 flex-shrink-0 bg-blue-50 rounded-full flex items-center justify-center text-[#2a3f8a] group-hover:bg-red-500 group-hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
                     </div>
                 </button>
 
-                <div class="relative flex py-2 items-center">
+                <div class="relative flex py-1 items-center">
                     <div class="flex-grow border-t border-gray-200"></div>
-                    <span class="flex-shrink-0 mx-4 text-gray-300 text-xs font-bold">OU</span>
+                    <span class="flex-shrink-0 mx-4 text-gray-300 text-xs font-bold uppercase">Ações de Operação</span>
                     <div class="flex-grow border-t border-gray-200"></div>
                 </div>
 
-                <label class="bg-white border-2 border-gray-100 p-6 rounded-3xl text-left hover:border-[#21c55e] hover:shadow-md transition-all flex items-center justify-between gap-4 cursor-pointer group">
+                <label class="bg-white border-2 border-gray-100 p-5 rounded-3xl text-left hover:border-[#21c55e] hover:shadow-md transition-all flex items-center justify-between gap-4 cursor-pointer group shadow-sm">
                     <div class="flex-1">
-                        <h3 class="text-xl font-black text-gray-700">2. Executar OS</h3>
-                        <p class="text-sm font-medium text-gray-400 mt-1">Carregar ficheiro gerado (.json)</p>
+                        <h3 class="text-lg font-black text-gray-700">2. Executar OS</h3>
+                        <p class="text-xs font-medium text-gray-400 mt-1">Carregar ficheiro .json gerado</p>
                         <input type="file" accept=".json" class="hidden" @change="carregarProcedimento($event)">
                     </div>
-                    <div class="w-12 h-12 flex-shrink-0 bg-green-50 rounded-full flex items-center justify-center text-[#21c55e] group-hover:bg-[#21c55e] group-hover:text-white transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    <div class="w-10 h-10 flex-shrink-0 bg-green-50 rounded-full flex items-center justify-center text-[#21c55e] group-hover:bg-[#21c55e] group-hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                     </div>
                 </label>
+
+                <!-- NOVO: BOTÃO MODO DEMONSTRAÇÃO -->
+                <button @click="carregarDemo()" :disabled="isLoadingDb" :class="isLoadingDb ? 'opacity-50 cursor-not-allowed' : ''" class="w-full bg-[#0f1a4a] text-white p-5 rounded-3xl flex items-center justify-between hover:bg-[#1e2f6a] transition-all shadow-md group border border-[#2a3f8a]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 flex-shrink-0 bg-white/10 rounded-full flex items-center justify-center text-white group-hover:bg-[#e21a22] transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </div>
+                        <div class="text-left flex-1">
+                            <h3 class="text-lg font-black tracking-wide">Modo DEMO</h3>
+                            <p class="text-[10px] text-blue-200 mt-0.5 font-medium">Explore uma OS pré-carregada</p>
+                        </div>
+                    </div>
+                    <svg class="text-blue-300 group-hover:text-white transition-colors" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+
             </div>
         </div>
     </div>
 
-    <!-- ==================== TELA CRIADOR & EDITOR (Fundo Claro) ==================== -->
+    <!-- ==================== TELA CRIADOR & EDITOR ==================== -->
     <div x-show="ecra === 'criador'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto bg-[#f8fafc] relative shadow-2xl pb-40">
         <div class="bg-white border-b border-gray-200 text-gray-800 p-4 shadow-sm sticky top-0 z-20 flex justify-between items-center gap-2">
             <button @click="ecra = 'home'" class="w-10 h-10 flex-shrink-0 bg-gray-100 rounded-full hover:bg-gray-200 transition flex items-center justify-center text-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
             </button>
-            
-            <!-- Logo LATAM para fundo claro (Roxo e Vermelho) -->
             <div class="flex items-center gap-2 flex-1 justify-center truncate">
                 <img src="https://i.imgur.com/mL8cUvQ.png" class="h-6 w-auto flex-shrink-0" alt="Logo LATAM">
                 <h1 class="font-black text-sm tracking-tight text-[#0f1a4a]" x-text="isEditingIndex !== null ? 'Editar OS' : 'Construir OS'"></h1>
             </div>
-
-            <button @click="modalEdicaoOpen = true" class="bg-[#0f1a4a] text-white text-[11px] px-3 py-2 rounded-full font-bold flex-shrink-0 flex items-center gap-1 cursor-pointer transition shadow-sm">
+            <button @click="modalEdicaoOpen = true" class="bg-[#0f1a4a] text-white text-[11px] px-3 py-2 rounded-full font-bold flex-shrink-0 flex items-center gap-1 cursor-pointer transition shadow-sm hover:bg-[#1e2f6a]">
                 <span x-text="bibliotecaEmCriacao.length + ' salvos'"></span>
                 <span class="text-[9px]">▼</span>
             </button>
@@ -121,14 +147,14 @@
             <template x-for="(etapa, indexEtapa) in proc.etapas" :key="indexEtapa">
                 <div class="bg-blue-50/40 p-4 rounded-xl border-2 border-blue-100 shadow-sm space-y-4 relative mt-4">
                     <button @click="removerEtapa(indexEtapa)" class="absolute top-3 right-3 text-red-500 hover:text-red-700 text-xs font-bold">Excluir Etapa</button>
-                    <label class="block text-xs font-bold text-[#0f1a4a] uppercase pr-20">Etapa Principal (Bolinha <span x-text="indexEtapa + 1"></span>)</label>
+                    <label class="block text-xs font-bold text-[#0f1a4a] uppercase pr-20">Etapa Principal (<span x-text="indexEtapa + 1"></span>)</label>
                     <input type="text" x-model="etapa.nome" class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm font-bold focus:outline-none focus:border-[#2a3f8a]">
 
                     <div class="space-y-4 pl-4 border-l-2 border-blue-200">
                         <template x-for="(modulo, indexModulo) in etapa.modulos" :key="indexModulo">
                             <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm relative mt-3">
                                 <button @click="removerModulo(indexEtapa, indexModulo)" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-[10px] font-bold">X Remover</button>
-                                <label class="block text-[10px] font-bold text-gray-400 uppercase pr-16">Título do Módulo (Caixa Branca)</label>
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase pr-16">Título do Módulo</label>
                                 <input type="text" x-model="modulo.titulo" class="w-full mb-3 mt-1 text-sm font-black text-[#0f1a4a] border-b border-gray-200 focus:outline-none">
                                 
                                 <div class="space-y-3">
@@ -138,13 +164,13 @@
                                                 <span class="text-[10px] bg-slate-200 px-1.5 py-0.5 rounded font-bold text-slate-600" x-text="'Check #' + (indexCheck + 1)"></span>
                                                 <button @click="modulo.checks.splice(indexCheck, 1)" class="text-red-500 text-xs hover:text-red-700">Remover</button>
                                             </div>
-                                            <textarea x-model="check.texto" placeholder="Instrução do check..." class="w-full p-2 border border-gray-200 rounded text-xs resize-none font-medium" rows="2"></textarea>
+                                            <textarea x-model="check.texto" placeholder="Instrução do check..." class="w-full p-2 border border-gray-200 rounded text-xs resize-none font-medium focus:border-[#0f1a4a] focus:outline-none" rows="2"></textarea>
                                             
                                             <div class="bg-white p-3 rounded border border-gray-100 space-y-3">
                                                 <div class="space-y-1 relative border-b border-gray-100 pb-2">
-                                                    <label class="text-[10px] font-black text-[#0f1a4a] uppercase tracking-wider block">🛠️ Ferramenta do Acervo (Sheets)</label>
+                                                    <label class="text-[10px] font-black text-[#0f1a4a] uppercase tracking-wider block">🛠️ Ferramenta do Acervo</label>
                                                     <div x-show="!check.toolCode">
-                                                        <input type="text" placeholder="Buscar ferramenta por P/N ou nome..." @input="buscarNoAcervo($event.target.value, check)" class="w-full text-xs border border-gray-300 rounded p-1.5 bg-gray-50 focus:bg-white outline-none">
+                                                        <input type="text" placeholder="Buscar por P/N ou nome..." @input="buscarNoAcervo($event.target.value, check)" class="w-full text-xs border border-gray-300 rounded p-1.5 bg-gray-50 focus:bg-white outline-none">
                                                         <div x-show="check._resultados && check._resultados.length > 0" class="absolute z-30 left-0 right-0 bg-white border border-gray-300 rounded shadow-lg max-h-35 overflow-y-auto mt-1 text-xs">
                                                             <template x-for="t in check._resultados" :key="t.id">
                                                                 <div @click="vincularFerramenta(t, check)" class="p-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 flex justify-between">
@@ -160,20 +186,20 @@
                                                             <span class="text-gray-400 mx-1">|</span>
                                                             <span class="text-emerald-700 font-medium" x-text="check._toolName"></span>
                                                         </div>
-                                                        <button @click="desvincularFerramenta(check)" class="text-[9px] flex-shrink-0 bg-red-100 text-red-600 px-2 py-1 rounded font-bold">Mudar</button>
+                                                        <button @click="desvincularFerramenta(check)" class="text-[9px] flex-shrink-0 bg-red-100 text-red-600 px-2 py-1 rounded font-bold hover:bg-red-200 transition">Mudar</button>
                                                     </div>
                                                 </div>
 
                                                 <div class="space-y-1 pt-1">
-                                                    <label class="text-[10px] font-black text-purple-900 uppercase tracking-wider block">📸 Apoio Visual (Foto Local/Manual)</label>
+                                                    <label class="text-[10px] font-black text-purple-900 uppercase tracking-wider block">📸 Imagem Manual</label>
                                                     <div x-show="!check.manualImg">
                                                         <input type="file" accept="image/*" @change="converterImagemBase64($event, check)" class="w-full text-xs border border-gray-300 rounded p-1 bg-gray-50">
                                                     </div>
                                                     <div x-show="check.manualImg" class="flex items-center justify-between bg-purple-50 border border-purple-200 p-1.5 rounded">
                                                         <span class="text-[11px] font-bold text-purple-800 flex items-center gap-1">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v10H4V12M22 4H2v8h20V4z"/></svg> Imagem Adicionada
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v10H4V12M22 4H2v8h20V4z"/></svg> Anexada
                                                         </span>
-                                                        <button @click="check.manualImg = ''" class="text-[9px] flex-shrink-0 bg-red-100 text-red-600 px-2 py-1 rounded font-bold">Excluir</button>
+                                                        <button @click="check.manualImg = ''" class="text-[9px] flex-shrink-0 bg-red-100 text-red-600 px-2 py-1 rounded font-bold hover:bg-red-200 transition">Excluir</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -192,8 +218,8 @@
         </div>
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-2xl z-20 space-y-3">
-            <button @click="adicionarABiblioteca()" :class="isEditingIndex !== null ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-[#0f1a4a] hover:bg-opacity-90'" class="w-full text-white py-3 rounded-xl font-bold text-sm shadow-sm transition" x-text="isEditingIndex !== null ? 'Salvar Alterações neste Procedimento' : 'Adicionar este à Biblioteca'"></button>
-            <button @click="exportarJSON()" class="w-full bg-[#e21a22] hover:bg-opacity-90 text-white py-3 rounded-xl font-bold text-sm shadow-lg transition">Finalizar e Baixar Arquivo Completo</button>
+            <button @click="adicionarABiblioteca()" :class="isEditingIndex !== null ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-[#0f1a4a] hover:bg-[#1e2f6a]'" class="w-full text-white py-3 rounded-xl font-bold text-sm shadow-sm transition" x-text="isEditingIndex !== null ? 'Salvar Alterações neste Procedimento' : 'Adicionar este à Biblioteca'"></button>
+            <button @click="exportarJSON()" class="w-full bg-[#e21a22] hover:bg-red-700 text-white py-3 rounded-xl font-bold text-sm shadow-lg transition">Finalizar e Baixar Arquivo Completo</button>
         </div>
     </div>
 
@@ -248,7 +274,7 @@
                     <span class="text-[10px] font-bold tracking-widest text-red-500 uppercase">LATAM</span>
                 </div>
             </div>
-            <p class="text-blue-200 text-xs font-medium">Criador de Procedimento Avançado</p>
+            <p class="text-blue-200 text-xs font-medium">Guia Operacional Avançado</p>
         </div>
 
         <div class="p-6 space-y-8 flex-1 mt-4">
@@ -481,6 +507,7 @@
                     }
                 },
 
+                // === VARIÁVEIS DO CRIADOR / EDITOR ===
                 bibliotecaEmCriacao: [],
                 isEditingIndex: null,
                 modalEdicaoOpen: false,
@@ -580,6 +607,7 @@
                     node.remove();
                 },
 
+                // === VARIÁVEIS DO EXECUTOR E DEMO ===
                 bibliotecaCarregada: [],
                 filtros: { equipamento: '', ciclo: '', processo: '' },
                 procCarregado: null,
@@ -589,6 +617,28 @@
                 checksMarcados: {},
                 modalData: { imgUrl: '', toolCode: '', local: '', tipoMenu: '' },
                 modalOpen: false,
+
+                // NOVO: Função que puxa a Demonstração direto do seu GitHub Gist
+                async carregarDemo() {
+                    this.isLoadingDb = true;
+                    try {
+                        const url = 'https://gist.githubusercontent.com/Dxebeecc/4cbf7e2c802d2da51ea7334673c6b8c8/raw/6f9905540bad1692fa5dae3c43891a0d56d4d2a8/demo_latam.json';
+                        const response = await fetch(url);
+                        if (!response.ok) throw new Error("Erro ao baixar o arquivo Demo");
+                        
+                        let dados = await response.json();
+                        if(!Array.isArray(dados)) { dados = [dados]; }
+                        
+                        this.bibliotecaCarregada = dados;
+                        this.filtros = { equipamento: '', ciclo: '', processo: '' };
+                        this.ecra = 'seletor_inicio';
+                    } catch (error) {
+                        alert("Não foi possível carregar a demonstração. Verifique sua conexão com a internet.");
+                        console.error(error);
+                    } finally {
+                        this.isLoadingDb = false;
+                    }
+                },
 
                 carregarProcedimento(event) {
                     const file = event.target.files[0];
