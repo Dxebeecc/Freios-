@@ -100,127 +100,191 @@
         </div>
     </div>
 
-    <div x-show="ecra === 'criador'" x-cloak class="min-h-screen flex flex-col w-full max-w-md mx-auto relative shadow-2xl pb-44 transition-colors duration-300" :class="darkMode ? 'bg-[#091030]' : 'bg-[#f8fafc]'">
+    <div x-show="ecra === 'criador'" x-cloak class="min-h-screen w-full lg:flex lg:flex-row transition-colors duration-300" :class="darkMode ? 'bg-[#091030]' : 'bg-[#f8fafc]'">
         
-        <div class="text-white p-4 pt-6 shadow-md sticky top-0 z-20 transition-colors" :class="darkMode ? 'bg-[#0f1a4a]' : 'bg-[#0f1a4a]'">
-            <div class="flex items-center justify-between mb-6">
-                <button @click="ecra = 'home'" class="w-10 h-10 flex-shrink-0 bg-white/10 rounded-full hover:bg-white/20 transition flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-                </button>
-                <div class="text-center flex-1 px-4 truncate">
-                    <div class="flex items-center justify-center gap-2 mb-1">
-                        <img src="https://i.imgur.com/x9rWRtr.png" class="h-4 w-auto" alt="Logo">
-                        <span class="text-[9px] font-black uppercase tracking-widest text-red-500">Arquiteto</span>
+        <div class="w-full max-w-md mx-auto min-h-screen relative shadow-2xl pb-44 flex flex-col lg:mx-0 lg:border-r overflow-y-auto lg:h-screen" :class="darkMode ? 'bg-[#091030] border-blue-950' : 'bg-[#f8fafc] border-gray-200'">
+            
+            <div class="bg-[#0f1a4a] text-white p-4 pt-6 shadow-md sticky top-0 z-20">
+                <div class="flex items-center justify-between mb-6">
+                    <button @click="ecra = 'home'" class="w-10 h-10 flex-shrink-0 bg-white/10 rounded-full hover:bg-white/20 transition flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <div class="text-center flex-1 px-4 truncate">
+                        <div class="flex items-center justify-center gap-2 mb-1">
+                            <img src="https://i.imgur.com/x9rWRtr.png" class="h-4 w-auto" alt="Logo">
+                            <span class="text-[9px] font-black uppercase tracking-widest text-red-500">Arquiteto</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-1">
+                            <input type="text" x-model="proc.equipamento" placeholder="EQUIPAMENTO" class="input-transparent text-center font-black text-sm uppercase text-white">
+                            <span class="text-blue-400 opacity-50">-</span>
+                            <input type="text" x-model="proc.processo" placeholder="FLUXO" class="input-transparent text-center font-bold text-xs uppercase text-blue-100">
+                        </div>
                     </div>
-                    <div class="flex items-center justify-center gap-1">
-                        <input type="text" x-model="proc.equipamento" placeholder="EQUIPAMENTO" class="input-transparent text-center font-black text-sm uppercase text-white">
-                        <span class="text-blue-400 opacity-50">-</span>
-                        <input type="text" x-model="proc.processo" placeholder="FLUXO" class="input-transparent text-center font-bold text-xs uppercase text-blue-100">
-                    </div>
+                    <button @click="modalEdicaoOpen = true" class="w-10 h-10 flex-shrink-0 bg-[#e21a22] rounded-full flex items-center justify-center shadow-lg transition active:scale-95 text-white">
+                        <span class="text-[10px] font-black" x-text="bibliotecaEmCriacao.length"></span>
+                    </button>
                 </div>
-                <button @click="modalEdicaoOpen = true" class="w-10 h-10 flex-shrink-0 bg-[#e21a22] rounded-full flex items-center justify-center shadow-lg transition active:scale-95 text-white">
-                    <span class="text-[10px] font-black" x-text="bibliotecaEmCriacao.length"></span>
-                </button>
+
+                <div class="bg-black/20 rounded-full py-1.5 px-4 mx-auto max-w-[220px] mb-2 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    <input type="text" x-model="proc.ciclo" placeholder="DEFINIR CICLO" class="input-transparent text-center font-bold text-[10px] uppercase tracking-widest text-white">
+                </div>
             </div>
 
-            <div class="bg-black/20 rounded-full py-1.5 px-4 mx-auto max-w-[220px] mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-                <input type="text" x-model="proc.ciclo" placeholder="DEFINIR CICLO" class="input-transparent text-center font-bold text-[10px] uppercase tracking-widest text-white">
+            <div class="p-5 space-y-8 flex-1">
+                <div class="p-4 rounded-2xl flex items-center justify-between border border-dashed transition-colors" :class="darkMode ? 'bg-[#13225c]/40 border-blue-500/20' : 'bg-blue-900/5 border-blue-900/20'">
+                    <p class="text-[10px] font-black uppercase" :class="darkMode ? 'text-blue-300/40' : 'text-blue-900/40'">Importar projeto antigo?</p>
+                    <label class="bg-[#0f1a4a] text-white text-[9px] font-black px-3 py-2 rounded-lg cursor-pointer uppercase tracking-widest hover:bg-opacity-80 border" :class="darkMode ? 'border-blue-500/30' : 'border-transparent'">
+                        Upload JSON
+                        <input type="file" accept=".json" class="hidden" @change="importarParaEdicao($event)">
+                    </label>
+                </div>
+
+                <template x-for="(etapa, indexEtapa) in proc.etapas" :key="indexEtapa">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-[#e21a22] text-white flex items-center justify-center font-black text-xs shadow-md" x-text="indexEtapa + 1"></div>
+                            <div class="flex-1 border rounded-xl px-4 py-2 shadow-sm flex items-center justify-between transition-colors" :class="darkMode ? 'bg-[#13225c] border-blue-900/50' : 'bg-white border-gray-200'">
+                                <input type="text" x-model="etapa.nome" placeholder="NOME DA ETAPA PRINCIPAL..." class="text-xs font-black outline-none uppercase bg-transparent w-full" :class="darkMode ? 'text-white placeholder-slate-500' : 'text-[#0f1a4a] placeholder-gray-300'">
+                                <button @click="removerEtapa(indexEtapa)" class="text-red-500 p-1 ml-2 opacity-40 hover:opacity-100 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="pl-4 ml-4 space-y-4 border-l-2 border-dashed" :class="darkMode ? 'border-blue-950' : 'border-gray-200'">
+                            <template x-for="(modulo, indexModulo) in etapa.modulos" :key="indexModulo">
+                                <div class="rounded-2xl border shadow-sm overflow-hidden transition-colors" :class="darkMode ? 'bg-[#0f1a4a]/40 border-blue-950' : 'bg-white border-gray-100'">
+                                    <div class="px-4 py-2 border-b flex justify-between items-center transition-colors" :class="darkMode ? 'bg-blue-950/40 border-blue-950' : 'bg-gray-50 border-gray-100'">
+                                        <span class="text-[9px] font-black uppercase tracking-tighter" :class="darkMode ? 'text-slate-400' : 'text-gray-400'">Título da Operação</span>
+                                        <button @click="removerModulo(indexEtapa, indexModulo)" class="text-[8px] font-black text-red-400 uppercase">Excluir Módulo</button>
+                                    </div>
+                                    <div class="p-3">
+                                        <input type="text" x-model="modulo.titulo" placeholder="Ex: Drenar Fluido Hidráulico..." class="w-full font-black text-sm uppercase outline-none mb-3 px-1 bg-transparent" :class="darkMode ? 'text-white placeholder-slate-600' : 'text-[#0f1a4a] placeholder-gray-300'">
+                                        
+                                        <div class="space-y-3">
+                                            <template x-for="(check, indexCheck) in modulo.checks" :key="indexCheck">
+                                                <div class="border rounded-xl p-3 space-y-3 relative transition-colors" :class="darkMode ? 'bg-[#13225c]/30 border-blue-950' : 'bg-[#f8fafc] border-gray-100'">
+                                                    <div class="flex gap-3">
+                                                        <div class="w-5 h-5 rounded-full border-2 flex-shrink-0" :class="darkMode ? 'border-slate-600' : 'border-gray-300'"></div>
+                                                        <textarea x-model="check.texto" placeholder="Escreva a instrução..." class="w-full bg-transparent text-xs font-bold outline-none resize-none" :class="darkMode ? 'text-gray-200 placeholder-slate-500' : 'text-gray-700 placeholder-gray-400'" rows="2"></textarea>
+                                                        <button @click="modulo.checks.splice(indexCheck, 1)" class="text-red-400 absolute top-2 right-2">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="grid grid-cols-2 gap-2">
+                                                        <div class="relative">
+                                                            <div x-show="!check.toolCode" class="h-8 border rounded-lg flex items-center px-2 transition-colors" :class="darkMode ? 'bg-blue-950/60 border-blue-900' : 'bg-blue-50 border-blue-100'">
+                                                                <svg class="text-blue-400 mr-1.5" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                                                <input type="text" placeholder="Vincular Peça..." @input="buscarNoAcervo($event.target.value, check)" class="bg-transparent text-[9px] font-black outline-none uppercase w-full" :class="darkMode ? 'text-white' : 'text-[#0f1a4a]'">
+                                                            </div>
+                                                            <div x-show="check.toolCode" class="h-8 rounded-lg flex items-center justify-between px-2 text-white bg-[#0f1a4a] border border-blue-800">
+                                                                <span class="text-[8px] font-black truncate pr-1" x-text="check.toolCode"></span>
+                                                                <button @click="desvincularFerramenta(check)" class="text-[8px] text-red-400 font-bold uppercase">X</button>
+                                                            </div>
+                                                            <div x-show="check._resultados && check._resultados.length > 0" class="absolute z-30 left-0 right-0 border rounded-lg shadow-xl max-h-32 overflow-y-auto mt-1" :class="darkMode ? 'bg-[#0f1a4a] border-blue-900' : 'bg-white border-gray-200'">
+                                                                <template x-for="t in check._resultados" :key="t.id">
+                                                                    <div @click="vincularFerramenta(t, check)" class="p-2 border-b cursor-pointer flex flex-col" :class="darkMode ? 'hover:bg-blue-950 border-blue-950' : 'hover:bg-red-50 border-gray-50'">
+                                                                        <span class="text-[9px] font-black" :class="darkMode ? 'text-white' : 'text-[#0f1a4a]'" x-text="t.code"></span>
+                                                                        <span class="text-[8px] text-gray-400 truncate" x-text="t.name"></span>
+                                                                    </div>
+                                                                </template>
+                                                            </div>
+                                                        </div>
+
+                                                        <div>
+                                                            <label x-show="!check.manualImg" class="h-8 border rounded-lg flex items-center justify-center px-2 cursor-pointer transition active:scale-95" :class="darkMode ? 'bg-purple-950/40 border-purple-900/50' : 'bg-purple-50 border-purple-100'">
+                                                                <svg class="text-purple-400 mr-1.5" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                                                <span class="text-[9px] font-black uppercase text-purple-400">Foto</span>
+                                                                <input type="file" accept="image/*" @change="converterImagemBase64($event, check)" class="hidden">
+                                                            </label>
+                                                            <div x-show="check.manualImg" class="h-8 bg-purple-900 rounded-lg flex items-center justify-between px-2 text-white">
+                                                                <span class="text-[8px] font-black uppercase">Imagem OK</span>
+                                                                <button @click="check.manualImg = ''" class="text-[8px] text-red-400 font-bold uppercase">X</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <button @click="adicionarCheck(indexEtapa, indexModulo)" class="w-full py-2 border border-dashed rounded-xl text-[9px] font-black uppercase transition-colors" :class="darkMode ? 'bg-blue-950/20 border-blue-900 text-slate-500 hover:bg-blue-950/40' : 'bg-gray-50 border-gray-200 text-gray-400 hover:bg-gray-100'">+ Novo Item de Checklist</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <button @click="adicionarModulo(indexEtapa)" class="w-full py-3 border-2 border-dashed rounded-2xl text-[10px] font-black uppercase transition-colors" :class="darkMode ? 'bg-blue-950/30 border-blue-900/50 text-blue-400/60 hover:bg-blue-950/50' : 'bg-[#0f1a4a]/5 border-[#0f1a4a]/10 text-[#0f1a4a]/40 hover:bg-[#0f1a4a]/10'">+ Nova Operação</button>
+                        </div>
+                    </div>
+                </template>
+
+                <button @click="adicionarEtapa()" class="w-full py-5 border-2 border-dashed rounded-3xl font-black text-xs uppercase shadow-sm active:scale-95 transition-all" :class="darkMode ? 'bg-[#13225c] border-blue-500/30 text-red-400 hover:bg-[#192b73]' : 'bg-white border-gray-200 text-[#e21a22] hover:bg-gray-50'">+ Adicionar Etapa Principal</button>
+            </div>
+
+            <div class="fixed bottom-0 left-0 right-0 border-t p-4 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] z-20 space-y-3 transition-colors lg:absolute lg:w-full" :class="darkMode ? 'bg-[#0f1a4a] border-blue-950' : 'bg-white border-gray-100'">
+                <button @click="adicionarABiblioteca()" class="w-full text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg transition active:scale-95" :class="darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-[#0f1a4a] hover:bg-[#1e2f6a]'" x-text="isEditingIndex !== null ? 'Confirmar Atualização' : 'Guardar na Biblioteca'"></button>
+                <button @click="exportarJSON()" class="w-full bg-[#e21a22] text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg transition active:scale-95 hover:bg-red-700">Finalizar e Baixar .JSON</button>
             </div>
         </div>
 
-        <div class="p-5 space-y-8">
-            <div class="p-4 rounded-2xl flex items-center justify-between border border-dashed transition-colors" :class="darkMode ? 'bg-[#13225c]/40 border-blue-500/20' : 'bg-blue-900/5 border-blue-900/20'">
-                <p class="text-[10px] font-black uppercase" :class="darkMode ? 'text-blue-300/40' : 'text-blue-900/40'">Importar projeto antigo?</p>
-                <label class="bg-[#0f1a4a] text-white text-[9px] font-black px-3 py-2 rounded-lg cursor-pointer uppercase tracking-widest hover:bg-opacity-80 border" :class="darkMode ? 'border-blue-500/30' : 'border-transparent'">
-                    Upload JSON
-                    <input type="file" accept=".json" class="hidden" @change="importarParaEdicao($event)">
-                </label>
-            </div>
+        <div class="hidden lg:flex flex-1 bg-slate-950/20 dark:bg-black/30 h-screen sticky top-0 items-center justify-center p-6 overflow-hidden border-l" :class="darkMode ? 'border-blue-950/40' : 'border-gray-200'" x-data="{ simEtapa: 0 }">
+            <div class="w-[360px] h-[730px] bg-zinc-900 rounded-[50px] p-3.5 shadow-2xl border-4 border-zinc-800 relative flex flex-col ring-1 ring-black/40">
+                
+                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-28 h-4 bg-black rounded-b-xl z-50 flex items-center justify-center">
+                    <div class="w-10 h-1 bg-zinc-800 rounded-full"></div>
+                </div>
 
-            <template x-for="(etapa, indexEtapa) in proc.etapas" :key="indexEtapa">
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-[#e21a22] text-white flex items-center justify-center font-black text-xs shadow-md" x-text="indexEtapa + 1"></div>
-                        <div class="flex-1 border rounded-xl px-4 py-2 shadow-sm flex items-center justify-between transition-colors" :class="darkMode ? 'bg-[#13225c] border-blue-900/50' : 'bg-white border-gray-200'">
-                            <input type="text" x-model="etapa.nome" placeholder="NOME DA ETAPA PRINCIPAL..." class="text-xs font-black outline-none uppercase bg-transparent w-full" :class="darkMode ? 'text-white placeholder-slate-500' : 'text-[#0f1a4a] placeholder-gray-300'">
-                            <button @click="removerEtapa(indexEtapa)" class="text-red-500 p-1 ml-2 opacity-40 hover:opacity-100 transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
-                            </button>
+                <div class="w-full h-full rounded-[36px] overflow-hidden flex flex-col relative bg-gray-100 dark:bg-[#091030] select-none">
+                    
+                    <div class="bg-[#0f1a4a] text-white p-3 pt-5 text-center shadow-md flex-shrink-0">
+                        <div class="flex items-center justify-center gap-1.5 opacity-60 mb-0.5">
+                            <img src="https://i.imgur.com/x9rWRtr.png" class="h-2.5 w-auto" alt="Logo">
+                            <span class="text-[7px] font-black uppercase tracking-widest text-white">Live Preview</span>
                         </div>
+                        <h1 class="font-black text-xs uppercase tracking-tight text-white truncate">
+                            <span x-text="proc.equipamento ? proc.equipamento : 'AERONAVE'"></span> 
+                            <span class="text-red-500 font-black mx-0.5">•</span> 
+                            <span class="text-blue-100 font-medium text-[10px]" x-text="proc.processo ? proc.processo : 'ROTEIRO'"></span>
+                        </h1>
+
+                        <div class="flex justify-center gap-4 mt-3 relative px-4">
+                            <template x-for="(et, idx) in proc.etapas">
+                                <div @click="simEtapa = idx" :class="simEtapa === idx ? 'bg-[#e21a22] border-white scale-110 shadow-md' : 'bg-[#0f1a4a] border-blue-900 text-blue-400'" class="w-6 h-6 rounded-full border-2 flex items-center justify-center font-black text-[9px] transition-all cursor-pointer z-10" x-text="idx + 1"></div>
+                            </template>
+                        </div>
+                        <div class="text-center mt-2.5 text-[8px] font-black text-white uppercase tracking-widest bg-black/20 py-1 px-3 rounded-full inline-block max-w-[180px] truncate" x-text="proc.etapas[simEtapa]?.nome ? proc.etapas[simEtapa]?.nome : 'Sem nome'"></div>
                     </div>
 
-                    <div class="pl-4 ml-4 space-y-4 border-l-2 border-dashed" :class="darkMode ? 'border-blue-950' : 'border-gray-200'">
-                        <template x-for="(modulo, indexModulo) in etapa.modulos" :key="indexModulo">
-                            <div class="rounded-2xl border shadow-sm overflow-hidden transition-colors" :class="darkMode ? 'bg-[#0f1a4a]/40 border-blue-950' : 'bg-white border-gray-100'">
-                                <div class="px-4 py-2 border-b flex justify-between items-center transition-colors" :class="darkMode ? 'bg-blue-950/40 border-blue-950' : 'bg-gray-50 border-gray-100'">
-                                    <span class="text-[9px] font-black uppercase tracking-tighter" :class="darkMode ? 'text-slate-400' : 'text-gray-400'">Título da Operação</span>
-                                    <button @click="removerModulo(indexEtapa, indexModulo)" class="text-[8px] font-black text-red-400 uppercase">Excluir Módulo</button>
-                                </div>
-                                <div class="p-3">
-                                    <input type="text" x-model="modulo.titulo" placeholder="Ex: Drenar Fluido Hidráulico..." class="w-full font-black text-sm uppercase outline-none mb-3 px-1 bg-transparent" :class="darkMode ? 'text-white placeholder-slate-600' : 'text-[#0f1a4a] placeholder-gray-300'">
-                                    
-                                    <div class="space-y-3">
-                                        <template x-for="(check, indexCheck) in modulo.checks" :key="indexCheck">
-                                            <div class="border rounded-xl p-3 space-y-3 relative transition-colors" :class="darkMode ? 'bg-[#13225c]/30 border-blue-950' : 'bg-[#f8fafc] border-gray-100'">
-                                                <div class="flex gap-3">
-                                                    <div class="w-5 h-5 rounded-full border-2 flex-shrink-0" :class="darkMode ? 'border-slate-600' : 'border-gray-300'"></div>
-                                                    <textarea x-model="check.texto" placeholder="Escreva a instrução do mecânico aqui..." class="w-full bg-transparent text-xs font-bold outline-none resize-none" :class="darkMode ? 'text-gray-200 placeholder-slate-500' : 'text-gray-700 placeholder-gray-400'" rows="2"></textarea>
-                                                    <button @click="modulo.checks.splice(indexCheck, 1)" class="text-red-400 absolute top-2 right-2">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                                                    </button>
-                                                </div>
+                    <div class="flex-1 p-3 overflow-y-auto space-y-3">
+                        <template x-if="!proc.etapas[simEtapa] || !proc.etapas[simEtapa].modulos || proc.etapas[simEtapa].modulos.length === 0 || (proc.etapas[simEtapa].modulos.length === 1 && proc.etapas[simEtapa].modulos[0].titulo === '')">
+                            <div class="text-center py-10 text-gray-300 dark:text-slate-600">
+                                <p class="text-[9px] font-black uppercase tracking-widest">Aguardando dados...</p>
+                            </div>
+                        </template>
 
-                                                <div class="grid grid-cols-2 gap-2">
-                                                    <div class="relative">
-                                                        <div x-show="!check.toolCode" class="h-8 border rounded-lg flex items-center px-2 transition-colors" :class="darkMode ? 'bg-blue-950/60 border-blue-900' : 'bg-blue-50 border-blue-100'">
-                                                            <svg class="text-blue-400 mr-1.5" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                                            <input type="text" placeholder="Vincular Peça..." @input="buscarNoAcervo($event.target.value, check)" class="bg-transparent text-[9px] font-black outline-none uppercase w-full" :class="darkMode ? 'text-white' : 'text-[#0f1a4a]'">
-                                                        </div>
-                                                        <div x-show="check.toolCode" class="h-8 rounded-lg flex items-center justify-between px-2 text-white bg-[#0f1a4a] border border-blue-800">
-                                                            <span class="text-[8px] font-black truncate pr-1" x-text="check.toolCode"></span>
-                                                            <button @click="desvincularFerramenta(check)" class="text-[8px] text-red-400 font-bold uppercase">X</button>
-                                                        </div>
-                                                        <div x-show="check._resultados && check._resultados.length > 0" class="absolute z-30 left-0 right-0 border rounded-lg shadow-xl max-h-32 overflow-y-auto mt-1" :class="darkMode ? 'bg-[#0f1a4a] border-blue-900' : 'bg-white border-gray-200'">
-                                                            <template x-for="t in check._resultados" :key="t.id">
-                                                                <div @click="vincularFerramenta(t, check)" class="p-2 border-b cursor-pointer flex flex-col" :class="darkMode ? 'hover:bg-blue-950 border-blue-950' : 'hover:bg-red-50 border-gray-50'">
-                                                                    <span class="text-[9px] font-black" :class="darkMode ? 'text-white' : 'text-[#0f1a4a]'" x-text="t.code"></span>
-                                                                    <span class="text-[8px] text-gray-400 truncate" x-text="t.name"></span>
-                                                                </div>
-                                                            </template>
-                                                        </div>
-                                                    </div>
-
-                                                    <div>
-                                                        <label x-show="!check.manualImg" class="h-8 border rounded-lg flex items-center justify-center px-2 cursor-pointer transition active:scale-95" :class="darkMode ? 'bg-purple-950/40 border-purple-900/50' : 'bg-purple-50 border-purple-100'">
-                                                            <svg class="text-purple-400 mr-1.5" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                                                            <span class="text-[9px] font-black uppercase text-purple-400">Anexar Foto</span>
-                                                            <input type="file" accept="image/*" @change="converterImagemBase64($event, check)" class="hidden">
-                                                        </label>
-                                                        <div x-show="check.manualImg" class="h-8 bg-purple-900 rounded-lg flex items-center justify-between px-2 text-white">
-                                                            <span class="text-[8px] font-black uppercase">Imagem OK</span>
-                                                            <button @click="check.manualImg = ''" class="text-[8px] text-red-400 font-bold uppercase">X</button>
-                                                        </div>
-                                                    </div>
+                        <template x-for="mod in proc.etapas[simEtapa]?.modulos">
+                            <div class="border rounded-2xl p-4 shadow-sm space-y-2.5 transition-all" :class="darkMode ? 'bg-[#0f1a4a] border-blue-950' : 'bg-white border-gray-100'">
+                                <h4 class="font-black text-xs uppercase tracking-tight" :class="darkMode ? 'text-white' : 'text-[#0f1a4a]'" x-text="mod.titulo ? mod.titulo : 'Nova Operação'"></h4>
+                                
+                                <div class="space-y-2">
+                                    <template x-for="ch in mod.checks">
+                                        <div class="flex gap-2.5 items-start bg-slate-500/5 p-2 rounded-xl border border-gray-500/5">
+                                            <div class="w-4 h-4 rounded-full border border-gray-300 dark:border-slate-700 flex-shrink-0 mt-0.5"></div>
+                                            <div class="flex-1 space-y-1.5">
+                                                <p class="text-[10px] font-bold leading-tight" :class="darkMode ? 'text-gray-300' : 'text-gray-700'" x-text="ch.texto ? ch.texto : 'Instrução vazia'"></p>
+                                                <div class="flex gap-1">
+                                                    <span x-show="ch.toolCode" class="text-[7px] font-black px-1.5 py-0.5 bg-blue-500/10 text-blue-400 rounded-md" x-text="'🛠️ ' + ch.toolCode"></span>
+                                                    <span x-show="ch.manualImg" class="text-[7px] font-black px-1.5 py-0.5 bg-purple-500/10 text-purple-400 rounded-md">📸 FOTO OK</span>
                                                 </div>
                                             </div>
-                                        </template>
-                                        <button @click="adicionarCheck(indexEtapa, indexModulo)" class="w-full py-2 border border-dashed rounded-xl text-[9px] font-black uppercase transition-colors" :class="darkMode ? 'bg-blue-950/20 border-blue-900 text-slate-500 hover:bg-blue-950/40' : 'bg-gray-50 border-gray-200 text-gray-400 hover:bg-gray-100'">+ Novo Item de Checklist</button>
-                                    </div>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
                         </template>
-                        <button @click="adicionarModulo(indexEtapa)" class="w-full py-3 border-2 border-dashed rounded-2xl text-[10px] font-black uppercase transition-colors" :class="darkMode ? 'bg-blue-950/30 border-blue-900/50 text-blue-400/60 hover:bg-blue-950/50' : 'bg-[#0f1a4a]/5 border-[#0f1a4a]/10 text-[#0f1a4a]/40 hover:bg-[#0f1a4a]/10'">+ Nova Operação (Caixa Branca)</button>
                     </div>
+
                 </div>
-            </template>
-
-            <button @click="adicionarEtapa()" class="w-full py-5 border-2 border-dashed rounded-3xl font-black text-xs uppercase shadow-sm active:scale-95 transition-all" :class="darkMode ? 'bg-[#13225c] border-blue-500/30 text-red-400 hover:bg-[#192b73]' : 'bg-white border-gray-200 text-[#e21a22] hover:bg-gray-50'">+ Adicionar Etapa Principal (Bolinha)</button>
-        </div>
-
-        <div class="fixed bottom-0 left-0 right-0 border-t p-4 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] z-20 space-y-3 transition-colors" :class="darkMode ? 'bg-[#0f1a4a] border-blue-950' : 'bg-white border-gray-100'">
-            <button @click="adicionarABiblioteca()" class="w-full text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg transition active:scale-95" :class="darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-[#0f1a4a] hover:bg-[#1e2f6a]'" x-text="isEditingIndex !== null ? 'Confirmar Atualização' : 'Guardar Procedimento na Biblioteca'"></button>
-            <button @click="exportarJSON()" class="w-full bg-[#e21a22] text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg transition active:scale-95 hover:bg-red-700">Finalizar Projeto e Baixar .JSON</button>
+            </div>
         </div>
     </div>
 
@@ -243,7 +307,7 @@
                     </div>
                 </template>
                 <template x-for="(item, index) in bibliotecaEmCriacao" :key="index">
-                    <div class="p-4 rounded-3xl border flex items-center justify-between transition-colors shadow-sm" :class="darkMode ? 'bg-[#0f1a4a] border-blue-950' : 'bg-white border-gray-100'">
+                    <div class="p-4 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between transition-colors" :class="darkMode ? 'bg-[#0f1a4a] border-blue-950' : 'bg-white border-gray-100'">
                         <div class="flex-1 pr-3 truncate">
                             <p class="text-[9px] font-black text-red-500 uppercase tracking-tighter" x-text="item.equipamento + ' • ' + item.ciclo"></p>
                             <p class="text-xs font-black uppercase truncate mt-0.5" :class="darkMode ? 'text-white' : 'text-[#0f1a4a]'" x-text="item.processo"></p>
@@ -282,7 +346,7 @@
                 <label class="block text-xs font-black uppercase tracking-widest mb-4 italic" :class="darkMode ? 'text-blue-300' : 'text-gray-400'">1. Qual o Equipamento?</label>
                 <div class="grid grid-cols-2 gap-3">
                     <template x-for="equip in equipamentosDisponiveis" :key="equip">
-                        <button @click="selecionarEquipamento(equip)" :class="filtros.equipamento === equip ? (darkMode ? 'bg-white text-[#0f1a4a] font-black' : 'bg-[#0f1a4a] text-white') : (darkMode ? 'bg-[#13225c] text-white border-blue-900/60' : 'bg-white text-[#0f1a4a] border-gray-100')" class="py-5 px-2 rounded-2xl font-black text-sm transition-all uppercase tracking-wide shadow-sm border" x-text="equip"></button>
+                        <button @click="selecionarEquipamento(equip)" :class="filtros.equipamento === equip ? (darkMode ? 'bg-white text-[#0f1a4a]' : 'bg-[#0f1a4a] text-white') : (darkMode ? 'bg-[#13225c] text-white border-blue-900/60' : 'bg-white text-[#0f1a4a] border-gray-100')" class="py-5 px-2 rounded-2xl font-black text-sm transition-all uppercase tracking-wide shadow-sm border" x-text="equip"></button>
                     </template>
                 </div>
             </div>
@@ -388,7 +452,7 @@
             <div class="max-w-md mx-auto flex justify-between gap-4">
                 <button @click="etapaAtual = Math.max(0, etapaAtual - 1)" :disabled="etapaAtual === 0" :class="etapaAtual === 0 ? 'opacity-20' : ''" class="flex-1 py-5 px-4 rounded-[24px] font-black text-[10px] uppercase tracking-widest transition-all" :class="darkMode ? 'bg-blue-950 text-slate-400' : 'bg-gray-100 text-gray-400'">Voltar</button>
                 <button x-show="etapaAtual < (procCarregado?.etapas.length || 1) - 1" @click="etapaAtual = Math.min(procCarregado.etapas.length - 1, etapaAtual + 1)" class="flex-none w-2/3 py-5 px-4 rounded-[24px] font-black text-[10px] uppercase tracking-widest bg-blue-50 text-[#0f1a4a] shadow-sm">Próxima Etapa</button>
-                <button x-show="etapaAtual === (procCarregado?.etapas.length || 1) - 1" @click="finalizar()" class="flex-none w-2/3 py-5 px-4 rounded-[24px] font-black text-[10px] uppercase tracking-widest bg-[#21c55e] text-white shadow-lg">Finalizar Guia</button>
+                <button x-show="etapaAtual === (procCarregado?.etapas.length || 1) - 1" @click="finalizar()" class="flex-none w-2/3 py-5 px-4 rounded-[24px] font-black text-[10px] uppercase tracking-widest bg-[#21c55e] text-white shadow-lg">Finalizar OS</button>
             </div>
         </div>
     </div>
@@ -473,10 +537,9 @@
                 ecra: 'home',
                 isLoadingDb: true,
                 toolsList: [],
-                darkMode: false, // Controla o estado de cores global
+                darkMode: false,
 
                 async init() {
-                    // Carrega a preferência de cor salva pelo usuário
                     this.darkMode = localStorage.getItem('darkMode') === 'true';
 
                     const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRHBw7M7f58VdQOb22lLEl6759ApiWB0fFHdqU1I8p45seWfxR7C-_X5tBGmTw4-ErnJaurfch2v3Bw/pub?gid=1418929880&single=true&output=csv';
@@ -596,7 +659,7 @@
                     node.remove();
                 },
 
-                // === VARIÁVEIS EXECUTOR ===
+                // === VARIÁVEIS EXECUTOR E DEMO ===
                 bibliotecaCarregada: [],
                 filtros: { equipamento: '', ciclo: '', processo: '' },
                 procCarregado: null,
