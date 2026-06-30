@@ -183,11 +183,17 @@
                                                         </button>
                                                     </div>
 
-                                                    <div class="flex gap-3 pr-16">
-                                                        <div class="w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5" :class="darkMode ? 'border-slate-600' : 'border-gray-300'"></div>
-                                                        <div class="flex-1 flex flex-col">
-                                                            <span x-show="check.tipo && check.tipo !== 'normal'" class="text-[9px] font-black uppercase mb-1" :class="getTextClass(check.tipo, darkMode, false)" x-text="getPrefix(check.tipo)"></span>
-                                                            <textarea x-model="check.texto" placeholder="Escreva a instrução da rotina..." class="w-full bg-transparent text-xs font-bold outline-none resize-none" :class="getTextClass(check.tipo, darkMode, false)" rows="2"></textarea>
+                                                    <div class="flex gap-3 pr-16 items-start">
+                                                        <div class="w-5 h-5 rounded-full border-2 flex-shrink-0" :class="darkMode ? 'border-slate-600' : 'border-gray-300'"></div>
+                                                        <div class="flex-1 flex flex-col mt-0.5"> <span x-show="check.tipo && check.tipo !== 'normal'" class="text-[9px] font-black uppercase mb-1" :class="getTextClass(check.tipo, darkMode, false)" x-text="getPrefix(check.tipo)"></span>
+                                                            
+                                                            <textarea x-model="check.texto"
+                                                                      x-init="$watch('check.texto', () => { $el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px' }); setTimeout(() => { $el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px' }, 100)"
+                                                                      @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
+                                                                      placeholder="Escreva a instrução da rotina..." 
+                                                                      class="w-full bg-transparent text-xs font-bold outline-none resize-none overflow-hidden" 
+                                                                      :class="getTextClass(check.tipo, darkMode, false)" 
+                                                                      rows="1"></textarea>
                                                         </div>
                                                     </div>
 
@@ -288,9 +294,8 @@
                                         
                                         <div class="border rounded-xl p-2.5 shadow-sm space-y-1.5 transition-all" :class="getContainerClass(ch.tipo, darkMode, false, false)">
                                             <div class="flex gap-2.5 items-start">
-                                                <div class="w-4 h-4 rounded-full border flex-shrink-0 mt-0.5" :class="darkMode ? 'border-slate-600' : 'border-gray-300'"></div>
-                                                <div class="flex-1 flex flex-col gap-1">
-                                                    <p :class="getTextClass(ch.tipo, darkMode, false)" class="text-[10px] leading-tight">
+                                                <div class="w-4 h-4 rounded-full border flex-shrink-0" :class="darkMode ? 'border-slate-600' : 'border-gray-300'"></div>
+                                                <div class="flex-1 flex flex-col gap-1 mt-0.5"> <p :class="getTextClass(ch.tipo, darkMode, false)" class="text-[10px] leading-tight">
                                                         <span x-show="ch.tipo && ch.tipo !== 'normal'" x-text="getPrefix(ch.tipo)"></span>
                                                         <span x-text="ch.texto ? ch.texto : 'Instrução vazia'"></span>
                                                     </p>
@@ -502,11 +507,10 @@
             <template x-for="(check, indexCheck) in moduloAtivo?.checks" :key="indexCheck">
                 
                 <div :class="getContainerClass(check.tipo, darkMode, checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck], false)" class="p-5 rounded-[28px] border-2 flex gap-4 items-start transition-all duration-300 shadow-sm">
-                    <div @click="toggleCheck(indexCheck)" :class="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck] ? 'bg-green-500 border-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]' : (darkMode ? 'border-blue-900 bg-blue-950/60' : 'border-gray-200 bg-gray-50')" class="mt-0.5 flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all cursor-pointer bg-white">
+                    <div @click="toggleCheck(indexCheck)" :class="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck] ? 'bg-green-500 border-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]' : (darkMode ? 'border-blue-900 bg-blue-950/60' : 'border-gray-200 bg-gray-50')" class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all cursor-pointer bg-white">
                         <svg x-show="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck]" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4"><path d="m20 6-11 11-5-5"/></svg>
                     </div>
-                    <div class="flex-1 pt-1 flex flex-col gap-4">
-                        <p :class="getTextClass(check.tipo, darkMode, checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck])" class="text-sm leading-snug whitespace-pre-line">
+                    <div class="flex-1 flex flex-col gap-4 mt-1.5"> <p :class="getTextClass(check.tipo, darkMode, checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck])" class="text-sm leading-snug whitespace-pre-line">
                             <span x-show="check.tipo && check.tipo !== 'normal'" x-text="getPrefix(check.tipo)"></span><span x-text="check.texto"></span>
                         </p>
                         
@@ -593,7 +597,7 @@
                                 loc: colunas[3] || 'Sem Móvel', 
                                 sub: colunas[4] || 'Sem Divisão', 
                                 image: colunas[5] || '',
-                                tutorial: colunas[8] || '' // Puxa o link do tutorial da coluna I (índice 9)
+                                tutorial: colunas[8] || '' // Puxa o link do tutorial
                             });
                         }
                     } catch (e) { console.error("Falha ao sincronizar acervo."); } finally { this.isLoadingDb = false; }
@@ -604,7 +608,6 @@
                     localStorage.setItem('darkMode', this.darkMode);
                 },
 
-                // LÓGICA DE CORES DOS ALERTAS DE AVIAÇÃO
                 getContainerClass(tipo, isDark, isMarcado, isCreator) {
                     if (isMarcado) return isDark ? 'bg-green-950/20 border-green-600 opacity-60' : 'bg-green-50/50 border-green-500 opacity-80';
                     if (tipo === 'warning') return isDark ? 'bg-red-950/20 border-red-900/50' : 'bg-red-50/50 border-red-200';
@@ -701,7 +704,7 @@
                     checkRef._toolName = tool.name; 
                     checkRef._local = `${tool.loc} > ${tool.sub}`; 
                     checkRef.imgUrl = tool.image && tool.image !== 'COLE_O_LINK_DO_IMGUR_AQUI' ? tool.image : ''; 
-                    checkRef.tutorialLink = tool.tutorial || ''; // Salva o link do tutorial
+                    checkRef.tutorialLink = tool.tutorial || ''; 
                     checkRef._resultados = []; 
                 },
                 desvincularFerramenta(checkRef) { checkRef.toolCode = ''; checkRef._toolName = ''; checkRef._local = ''; checkRef.imgUrl = ''; checkRef.tutorialLink = ''; checkRef._resultados = []; },
@@ -798,7 +801,7 @@
                         imgUrl: checkData.imgUrl || '', 
                         toolCode: checkData.toolCode || '', 
                         local: checkData._local || 'Consulte Acervo Físico', 
-                        tutorial: checkData.tutorialLink || '', // Repassa o link para a interface do modal
+                        tutorial: checkData.tutorialLink || '', 
                         tipoMenu: 'Acervo Técnico de Ferramentas' 
                     }; 
                     this.modalOpen = true; 
@@ -808,7 +811,7 @@
                         imgUrl: checkData.manualImg || '', 
                         toolCode: '', 
                         local: 'Foto Anexada Manualmente', 
-                        tutorial: '', // Foto manual não tem link externo
+                        tutorial: '', 
                         tipoMenu: 'Apoio Visual / Esquema' 
                     }; 
                     this.modalOpen = true; 
