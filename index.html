@@ -19,13 +19,46 @@
         .input-transparent::placeholder { color: rgba(255,255,255,0.4); }
     </style>
 </head>
-<body class="antialiased min-h-screen" :class="darkMode ? 'bg-[#091030] text-gray-100' : 'bg-[#f8fafc] text-gray-800'" x-data="appPlataforma">
+<body class="antialiased min-h-screen overflow-x-hidden" :class="darkMode ? 'bg-[#091030] text-gray-100' : 'bg-[#f8fafc] text-gray-800'" x-data="appPlataforma()">
 
     <!-- BOTÃO FLUTUANTE GLOBAL DE MODO CLARO/ESCURO -->
     <button @click="toggleDarkMode()" class="fixed bottom-6 right-6 w-12 h-12 rounded-full shadow-2xl flex items-center justify-center z-50 transition-all active:scale-90" :class="darkMode ? 'bg-white text-[#0f1a4a]' : 'bg-[#0f1a4a] text-white'">
         <svg x-show="darkMode" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.07" x2="5.64" y2="17.66"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         <svg x-show="!darkMode" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
+
+    <!-- ==================== TELA SELETOR DE OFICINA ==================== -->
+    <div x-show="ecra === 'selecionar_oficina'" x-cloak class="min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="w-full max-w-md rounded-3xl shadow-2xl p-8 flex flex-col transition-colors duration-300" :class="darkMode ? 'bg-[#0f1a4a]' : 'bg-white'">
+            <div class="text-center mb-6">
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <img src="https://i.imgur.com/x9rWRtr.png" class="h-10 w-auto flex-shrink-0" alt="Logo LATAM">
+                    <div class="text-left">
+                        <h1 class="text-2xl font-black tracking-tight leading-none">Arquiteto</h1>
+                        <span class="text-xs font-bold tracking-widest text-red-500 uppercase">LATAM</span>
+                    </div>
+                </div>
+                <p class="text-sm font-medium" :class="darkMode ? 'text-blue-200' : 'text-gray-500'">Selecione sua oficina de atuação para carregar o acervo correto.</p>
+            </div>
+
+            <div class="space-y-3">
+                <template x-for="(config, chave) in oficinasDisponiveis" :key="chave">
+                    <button @click="selecionarOficina(chave)" 
+                            class="w-full p-4 rounded-2xl border text-left font-bold text-sm uppercase tracking-wide transition-all duration-200 active:scale-95 flex items-center justify-between group shadow-sm"
+                            :class="darkMode ? 'bg-[#13225c] border-blue-900 text-white hover:bg-[#192b73] hover:border-blue-500' : 'bg-gray-50 border-gray-200 text-[#0f1a4a] hover:bg-red-50/50 hover:border-red-500'">
+                        <span x-text="config.nome"></span>
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </template>
+            </div>
+            
+            <p class="text-center text-[10px] mt-6 font-semibold uppercase tracking-widest" :class="darkMode ? 'text-blue-300/40' : 'text-gray-400'">
+                A seleção será salva neste dispositivo
+            </p>
+        </div>
+    </div>
 
     <!-- ==================== TELA HOME ==================== -->
     <div x-show="ecra === 'home'" x-cloak class="min-h-screen flex flex-col items-center">
@@ -42,7 +75,7 @@
                 </a>
             </div>
 
-            <div class="bg-[#0f1a4a] p-8 text-white text-center rounded-b-3xl shadow-lg relative z-10 border-b" :class="darkMode ? 'border-blue-900/50' : 'border-transparent'">
+            <div class="bg-[#0f1a4a] p-8 text-white text-center rounded-b-3xl shadow-lg relative z-10 border-b flex flex-col items-center justify-center" :class="darkMode ? 'border-blue-900/50' : 'border-transparent'">
                 <div class="flex items-center justify-center gap-3 mb-4 mt-2">
                     <img src="https://i.imgur.com/x9rWRtr.png" class="h-10 w-auto flex-shrink-0" alt="Logo LATAM">
                     <div class="text-left">
@@ -52,7 +85,13 @@
                 </div>
                 <p class="text-blue-200 text-sm font-medium">Criador de Procedimento Avançado</p>
                 
-                <div class="mt-5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-white">
+                <!-- Identificador e Seletor de Oficina Ativa -->
+                <div class="mt-3 text-xs font-semibold flex items-center justify-center gap-2 px-3 py-1 bg-black/20 rounded-full">
+                    <span :class="darkMode ? 'text-blue-200' : 'text-blue-100'" x-text="'Setor: ' + oficinaNome"></span>
+                    <button @click="ecra = 'selecionar_oficina'" class="px-2 py-0.5 rounded bg-red-500 hover:bg-red-600 text-white text-[9px] font-black uppercase tracking-wider transition">Alterar</button>
+                </div>
+
+                <div class="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-white">
                     <span :class="isLoadingDb ? 'bg-orange-400 animate-pulse' : 'bg-green-400'" class="w-2 h-2 rounded-full flex-shrink-0"></span>
                     <span x-text="isLoadingDb ? 'Sincronizando Banco de Dados...' : 'Acervo Digital e Rede Prontos'" class="truncate"></span>
                 </div>
@@ -136,7 +175,7 @@
                 </div>
             </div>
 
-            <div class="flex-1 p-5 space-y-8 pb-48 lg:pb-8 lg:overflow-y-auto w-full">
+            <div class="flex-1 p-5 space-y-8 pb-48 lg:pb-8 overflow-y-auto w-full">
                 <div class="p-4 rounded-2xl flex items-center justify-between border border-dashed transition-colors" :class="darkMode ? 'bg-[#13225c]/40 border-blue-500/20' : 'bg-blue-900/5 border-blue-900/20'">
                     <p class="text-[10px] font-black uppercase" :class="darkMode ? 'text-blue-300/40' : 'text-blue-900/40'">Importar projeto antigo?</p>
                     <label class="bg-[#0f1a4a] text-white text-[9px] font-black px-3 py-2 rounded-lg cursor-pointer uppercase tracking-widest hover:bg-opacity-80 border" :class="darkMode ? 'border-blue-500/30' : 'border-transparent'">
@@ -521,8 +560,7 @@
                     <div @click="toggleCheck(indexCheck)" :class="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck] ? 'bg-green-500 border-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]' : (darkMode ? 'border-blue-900 bg-blue-950/60' : 'border-gray-200 bg-gray-50')" class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all cursor-pointer bg-white">
                         <svg x-show="checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck]" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4"><path d="m20 6-11 11-5-5"/></svg>
                     </div>
-                    <div class="flex-1 flex flex-col gap-4 mt-1.5"> <!-- Ajuste fino de alinhamento com a bolinha -->
-                        <!-- TEXTO INLINE PARA EVITAR ESPAÇOS FANTASMAS DO CÓDIGO -->
+                    <div class="flex-1 flex flex-col gap-4 mt-1.5">
                         <p :class="getTextClass(check.tipo, darkMode, checksMarcados[etapaAtual + '-' + moduloAtivoIndex + '-' + indexCheck])" class="text-sm leading-snug whitespace-pre-line"><span x-show="check.tipo && check.tipo !== 'normal'" x-text="getPrefix(check.tipo)"></span><span x-text="check.texto"></span></p>
                         
                         <div class="flex flex-wrap gap-2 w-full">
@@ -581,19 +619,110 @@
         </div>
     </div>
 
+    <!-- ==================== CUSTOM MODAL PARA ALERTS/CONFIRMS ==================== -->
+    <div x-show="customAlertState.open" x-cloak class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" @click.self="closeCustomAlert()">
+        <div class="bg-white dark:bg-[#0f1a4a] text-[#0f1a4a] dark:text-white rounded-3xl p-6 max-w-sm w-full shadow-2xl transform transition-all border border-gray-200 dark:border-blue-900"
+             :class="darkMode ? 'bg-[#0f1a4a] border-blue-900 text-white' : 'bg-white border-gray-200 text-[#0f1a4a]'">
+            <p class="text-center font-black text-sm mb-6" x-text="customAlertState.message"></p>
+            <div class="flex justify-center gap-3">
+                <button x-show="customAlertState.isConfirm" @click="closeCustomAlert()" class="px-5 py-2.5 rounded-xl text-xs font-bold transition"
+                        :class="darkMode ? 'bg-blue-900/50 text-gray-300 hover:bg-blue-800' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'">Cancelar</button>
+                <button @click="confirmCustomAlert()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#e21a22] text-white hover:bg-red-700 transition" x-text="customAlertState.isConfirm ? 'Confirmar' : 'OK'"></button>
+            </div>
+        </div>
+    </div>
+
     <!-- ==================== SCRIPT PRINCIPAL ==================== -->
     <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('appPlataforma', () => ({
+        // Mapeamento Centralizado de Oficinas e Planilhas CSV
+        const OFICINAS_CONFIG = {
+            'rodas_freios': {
+                nome: 'Rodas e Freios',
+                csv: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRHBw7M7f58VdQOb22lLEl6759ApiWB0fFHdqU1I8p45seWfxR7C-_X5tBGmTw4-ErnJaurfch2v3Bw/pub?gid=1418929880&single=true&output=csv'
+            },
+            'hidraulica': {
+                nome: 'Oficina de Hidráulica',
+                csv: '' // Pronto para preenchimento posterior pelas outras equipes
+            },
+            'pneumatica': {
+                nome: 'Oficina de Pneumática',
+                csv: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9n_3ZU0DYq9UvTzaKBFoTwLcwmtCvOoohB6QN360TQhjNAaVAz4wVazdvMj7RbRHBjk9qhSvvIjS1/pub?output=csv'
+            },
+            'eletronica': {
+                nome: 'Oficina de Eletrônica',
+                csv: ''
+            },
+            'estruturas': {
+                nome: 'Hangar / Estruturas',
+                csv: ''
+            }
+        };
+
+        // Declaramos como uma função global tradicional. Isso elimina 100% dos erros de inicialização (ReferenceError) em Iframes.
+        function appPlataforma() {
+            return {
                 ecra: 'home',
                 isLoadingDb: true,
                 toolsList: [],
                 darkMode: false,
+                
+                // Mapeamento dinâmico de Oficinas
+                oficinasDisponiveis: OFICINAS_CONFIG,
+                oficinaSelecionada: '',
+                oficinaNome: '',
 
-                async init() {
+                // Variáveis para substituir window.alert e window.confirm
+                customAlertState: { open: false, message: '', isConfirm: false, confirmCallback: null },
+
+                init() {
                     this.darkMode = localStorage.getItem('darkMode') === 'true';
 
-                    const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRHBw7M7f58VdQOb22lLEl6759ApiWB0fFHdqU1I8p45seWfxR7C-_X5tBGmTw4-ErnJaurfch2v3Bw/pub?gid=1418929880&single=true&output=csv';
+                    // 1. Verifica parâmetro na URL (?oficina=xxx)
+                    const urlParams = new URLSearchParams(window.location.search);
+                    let oUrl = urlParams.get('oficina');
+                    
+                    // 2. Verifica localStorage para lembrar a escolha anterior
+                    let oLocal = localStorage.getItem('oficina_selecionada');
+                    
+                    let oficinaParaCarregar = '';
+                    if (oUrl && this.oficinasDisponiveis[oUrl]) {
+                        oficinaParaCarregar = oUrl;
+                    } else if (oLocal && this.oficinasDisponiveis[oLocal]) {
+                        oficinaParaCarregar = oLocal;
+                    }
+
+                    if (oficinaParaCarregar) {
+                        this.selecionarOficina(oficinaParaCarregar, true);
+                    } else {
+                        this.isLoadingDb = false; // Desativa loading para exibir a tela de onboarding de oficina
+                        this.ecra = 'selecionar_oficina';
+                    }
+                },
+
+                selecionarOficina(chave, deInit = false) {
+                    this.oficinaSelecionada = chave;
+                    this.oficinaNome = this.oficinasDisponiveis[chave].nome;
+                    localStorage.setItem('oficina_selecionada', chave);
+                    
+                    if (!deInit) {
+                        this.ecra = 'home';
+                    }
+                    this.carregarDadosOficina(chave);
+                },
+
+                async carregarDadosOficina(chave) {
+                    this.isLoadingDb = true;
+                    this.toolsList = []; // Reseta lista anterior
+
+                    let config = this.oficinasDisponiveis[chave];
+                    let csvUrl = config.csv;
+
+                    // Fallback amigável caso a oficina ainda não tenha planilha própria configurada
+                    if (!csvUrl) {
+                        this.customAlert(`A equipe de ${config.nome} ainda não cadastrou o link da sua planilha. Carregando planilha padrão de teste (Rodas e Freios)...`);
+                        csvUrl = this.oficinasDisponiveis['rodas_freios'].csv;
+                    }
+
                     try {
                         const response = await fetch(csvUrl);
                         if (!response.ok) throw new Error();
@@ -613,7 +742,34 @@
                                 tutorial: colunas[8] || '' 
                             });
                         }
-                    } catch (e) { console.error("Falha ao sincronizar acervo."); } finally { this.isLoadingDb = false; }
+                    } catch (e) { 
+                        console.error("Falha ao sincronizar acervo."); 
+                        this.customAlert("Não foi possível carregar a planilha selecionada. Verifique se ela foi publicada corretamente como CSV.");
+                    } finally { 
+                        this.isLoadingDb = false; 
+                    }
+                },
+
+                // ==== SISTEMA DE ALERTS CUSTOMIZADOS ====
+                customAlert(msg) {
+                    this.customAlertState.message = msg;
+                    this.customAlertState.isConfirm = false;
+                    this.customAlertState.open = true;
+                },
+                customConfirm(msg, callback) {
+                    this.customAlertState.message = msg;
+                    this.customAlertState.isConfirm = true;
+                    this.customAlertState.confirmCallback = callback;
+                    this.customAlertState.open = true;
+                },
+                closeCustomAlert() {
+                    this.customAlertState.open = false;
+                },
+                confirmCustomAlert() {
+                    if (this.customAlertState.isConfirm && this.customAlertState.confirmCallback) {
+                        this.customAlertState.confirmCallback();
+                    }
+                    this.closeCustomAlert();
                 },
 
                 toggleDarkMode() {
@@ -669,8 +825,8 @@
                             if(!Array.isArray(dados)) { dados = [dados]; }
                             this.bibliotecaEmCriacao = dados;
                             this.isEditingIndex = null;
-                            alert(`${this.bibliotecaEmCriacao.length} fluxos carregados na biblioteca!`);
-                        } catch(error) { alert("JSON Inválido."); }
+                            this.customAlert(`${this.bibliotecaEmCriacao.length} fluxos carregados na biblioteca!`);
+                        } catch(error) { this.customAlert("JSON Inválido."); }
                     };
                     reader.readAsText(file);
                     event.target.value = ''; 
@@ -683,11 +839,11 @@
                 },
 
                 removerDaBiblioteca(index) {
-                    if(confirm("Excluir definitivamente este fluxo?")) {
+                    this.customConfirm("Excluir definitivamente este fluxo?", () => {
                         this.bibliotecaEmCriacao.splice(index, 1);
                         if(this.isEditingIndex === index) { this.iniciarCriacao(); }
                         else if (this.isEditingIndex > index) { this.isEditingIndex--; }
-                    }
+                    });
                 },
 
                 adicionarEtapa() { this.proc.etapas.push({ nome: '', modulos: [] }); },
@@ -723,14 +879,14 @@
                 desvincularFerramenta(checkRef) { checkRef.toolCode = ''; checkRef._toolName = ''; checkRef._local = ''; checkRef.imgUrl = ''; checkRef.tutorialLink = ''; checkRef._resultados = []; },
 
                 adicionarABiblioteca() {
-                    if(!this.proc.equipamento || !this.proc.ciclo || !this.proc.processo) { alert("Preencha os dados do cabeçalho!"); return; }
+                    if(!this.proc.equipamento || !this.proc.ciclo || !this.proc.processo) { this.customAlert("Preencha os dados do cabeçalho!"); return; }
                     if (this.isEditingIndex !== null) {
                         this.bibliotecaEmCriacao[this.isEditingIndex] = JSON.parse(JSON.stringify(this.proc));
                         this.isEditingIndex = null;
-                        alert("Atualizado com sucesso!");
+                        this.customAlert("Atualizado com sucesso!");
                     } else {
                         this.bibliotecaEmCriacao.push(JSON.parse(JSON.stringify(this.proc)));
-                        alert("Adicionado à biblioteca!");
+                        this.customAlert("Adicionado à biblioteca!");
                     }
                     this.proc = { equipamento: this.proc.equipamento, ciclo: this.proc.ciclo, processo: '', etapas: [{ nome: '', modulos: [{ titulo: '', checks: [] }] }] };
                 },
@@ -739,7 +895,7 @@
                     if (this.isEditingIndex !== null) { this.bibliotecaEmCriacao[this.isEditingIndex] = JSON.parse(JSON.stringify(this.proc)); } 
                     else if (this.proc.processo && this.proc.etapas.length > 0) { this.bibliotecaEmCriacao.push(JSON.parse(JSON.stringify(this.proc))); }
                     
-                    if(this.bibliotecaEmCriacao.length === 0) { alert("Biblioteca vazia."); return; }
+                    if(this.bibliotecaEmCriacao.length === 0) { this.customAlert("Biblioteca vazia."); return; }
                     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.bibliotecaEmCriacao, null, 2));
                     const node = document.createElement('a');
                     node.setAttribute("href", dataStr);
@@ -770,7 +926,7 @@
                         this.bibliotecaCarregada = dados;
                         this.filtros = { equipamento: '', ciclo: '', processo: '' };
                         this.ecra = 'seletor_inicio';
-                    } catch (error) { alert("Erro ao carregar Demo."); } finally { this.isLoadingDb = false; }
+                    } catch (error) { this.customAlert("Erro ao carregar Demo."); } finally { this.isLoadingDb = false; }
                 },
 
                 carregarProcedimento(event) {
@@ -823,15 +979,15 @@
                     this.modalData = { 
                         imgUrl: checkData.manualImg || '', 
                         toolCode: '', 
-                        local: 'Foto Anexada Manualmente', 
+                        local: 'Foto Anexada Manuscrita ou por Câmera', 
                         tutorial: '', 
                         tipoMenu: 'Apoio Visual / Esquema' 
                     }; 
                     this.modalOpen = true; 
                 },
-                finalizar() { alert("Guia concluído com sucesso!"); this.ecra = 'home'; }
-            }));
-        });
+                finalizar() { this.customAlert("Guia concluído com sucesso!"); this.ecra = 'home'; }
+            };
+        }
     </script>
 </body>
 </html>
