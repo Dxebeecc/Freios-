@@ -119,7 +119,7 @@
 
                 <label class="p-5 rounded-3xl text-left border-2 transition-all flex items-center justify-between gap-4 cursor-pointer group shadow-sm" :class="darkMode ? 'bg-[#13225c] border-blue-900/50 hover:border-[#21c55e]' : 'bg-white border-gray-100 hover:border-[#21c55e] hover:shadow-md'">
                     <div class="flex-1">
-                        <h3 class="text-lg font-black" :class="darkMode ? 'text-white' : 'text-[#0f1a4a]'">2. Executar OS</h3>
+                        <h3 class="text-lg font-black" :class="darkMode ? 'text-white' : 'text-gray-700'">2. Executar OS</h3>
                         <p class="text-xs font-medium mt-1" :class="darkMode ? 'text-blue-200/60' : 'text-gray-400'">Carregar ficheiro .json gerado</p>
                         <input type="file" accept=".json" class="hidden" @change="carregarProcedimento($event)">
                     </div>
@@ -171,17 +171,17 @@
                     </button>
                 </div>
 
-                <div class="bg-black/20 rounded-full py-1.5 px-4 mx-auto max-w-[220px] mb-2 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-                    <input type="text" :disabled="modoOrdenacao" x-model="proc.ciclo" placeholder="DEFINIR CICLO" class="input-transparent text-center font-bold text-[10px] uppercase tracking-widest text-white">
-                </div>
-
-                <!-- NOVO: BOTÃO GLOBAL DE ALTERNÂNCIA DE MODO ORDENAÇÃO -->
-                <div class="mt-3 flex justify-center">
-                    <button @click="modoOrdenacao = !modoOrdenacao" class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all border flex items-center gap-2 shadow-md" :class="modoOrdenacao ? 'bg-amber-500 text-[#0f1a4a] border-amber-400' : 'bg-white/10 text-white border-white/20 hover:bg-white/20'">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m3 16 4 4 4-4M7 20V4M21 8l-4-4-4 4M17 4v16"/></svg>
-                        <span x-text="modoOrdenacao ? 'Concluir Ordenação' : 'Organizar Fluxo (Mover)'"></span>
+                <!-- NOVO LAYOUT DO CABEÇALHO COMPACTO (ORDENAÇÃO + CICLO) -->
+                <div class="bg-black/20 rounded-full py-1 pl-1 pr-4 mx-auto max-w-[250px] mb-2 flex items-center gap-2">
+                    <!-- Botão de Ordenação (Apenas Ícone) -->
+                    <button @click="modoOrdenacao = !modoOrdenacao" class="w-8 h-8 flex-shrink-0 rounded-full flex items-center justify-center transition-colors shadow-sm" :class="modoOrdenacao ? 'bg-amber-500 text-[#0f1a4a]' : 'bg-white/10 text-white hover:bg-white/20'" title="Ativar/Desativar Modo de Ordenação">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m3 16 4 4 4-4M7 20V4M21 8l-4-4-4 4M17 4v16"/></svg>
                     </button>
+                    
+                    <div class="h-4 w-px bg-white/20 flex-shrink-0"></div> <!-- Divisor vertical -->
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" class="flex-shrink-0"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    <input type="text" :disabled="modoOrdenacao" x-model="proc.ciclo" placeholder="DEFINIR CICLO" class="input-transparent text-center font-bold text-[10px] uppercase tracking-widest text-white w-full">
                 </div>
             </div>
 
@@ -701,7 +701,7 @@
                 isLoadingDb: true,
                 toolsList: [],
                 darkMode: false,
-                modoOrdenacao: false, // Nova variável para ativar/desativar modo de mover
+                modoOrdenacao: false, 
                 
                 oficinasDisponiveis: OFICINAS_CONFIG,
                 oficinaSelecionada: '',
@@ -771,7 +771,7 @@
                         const regexCSV = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
                         for (let i = 1; i < linhas.length; i++) {
                             if (!linhas[i].trim()) continue;
-                            const colunas = líneas[i].split(regexCSV).map(c => c.replace(/^"|"$/g, '').trim());
+                            const colunas = linhas[i].split(regexCSV).map(c => c.replace(/^"|"$/g, '').trim());
                             this.toolsList.push({ 
                                 id: i, 
                                 name: colunas[0] || 'N/A', 
@@ -790,7 +790,6 @@
                     }
                 },
 
-                // LÓGICA DE REORDENAÇÃO ULTRA LEVE REATIVA (ETAPAS, OPERAÇÕES E CHECKS)
                 moverItem(array, index, direcao) {
                     if (direcao === 'cima' && index > 0) {
                         let item = array.splice(index, 1)[0];
